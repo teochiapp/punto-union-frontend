@@ -1,25 +1,26 @@
-import logo from './logo.svg';
-import './App.css';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import MainLayout from './components/layout/MainLayout';
+import HomeContainer from './pages/Home/HomeContainer';
+import CatalogContainer from './pages/Catalog/CatalogContainer';
+import CartContainer from './pages/Catalog/Cart/CartContainer';
+import CheckoutContainer from './pages/Catalog/Checkout/CheckoutContainer';
+import AboutContainer from './pages/About/AboutContainer';
 
-function App() {
+const App = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route element={<MainLayout />}>
+          <Route index element={<HomeContainer />} />
+          <Route path="catalog" element={<CatalogContainer />}>
+            <Route path="cart" element={<CartContainer />} />
+            <Route path="checkout" element={<CheckoutContainer />} />
+          </Route>
+          <Route path="about" element={<AboutContainer />} />
+        </Route>
+      </Routes>
+    </BrowserRouter>
   );
-}
+};
 
 export default App;
