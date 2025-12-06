@@ -1,4 +1,4 @@
-import HomeView from './HomeView';
+import HomeView from './Home';
 
 const HomeContainer = () => {
   const featuredSections = [
