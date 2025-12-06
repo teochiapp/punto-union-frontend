@@ -1,20 +1,21 @@
-const HomeView = ({ featuredSections }) => {
+import Categories from '../../components/Home/Categories/Categories';
+import Sucursales from '../../components/Home/Sucursales/Sucursales';
+import CategoriesMarquee from '../../components/Home/CategoriesMarquee/CategoriesMarquee';
+
+const HomeView = () => {
   return (
-    <section className="page page--home">
-      <h1>Bienvenido a Punto Unión Market</h1>
-      <p>
-        Somos el puente entre productores locales y consumidores conscientes. Descubrí
-        alimentos frescos, artesanías únicas y productos sustentables elaborados con pasión.
-      </p>
-      <div className="home__sections">
-        {featuredSections.map((section) => (
-          <article key={section.title} className="home__section-card">
-            <h2>{section.title}</h2>
-            <p>{section.description}</p>
-          </article>
-        ))}
-      </div>
-    </section>
+    <>
+      <section className="page page--home">
+        {/* Categories Section */}
+        <Categories />
+
+        {/* Sucursales Section */}
+        <Sucursales />
+      </section>
+
+      {/* Categories Marquee - Outside page container to prevent overflow */}
+      <CategoriesMarquee />
+    </>
   );
 };
 

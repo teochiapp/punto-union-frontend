@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import MainLayout from './components/layout/MainLayout';
 import HomeContainer from './pages/Home/HomeContainer';
+import Catalog from './pages/Catalog/Catalog';
 import CatalogContainer from './pages/Catalog/CatalogContainer';
 import CartContainer from './pages/Catalog/Cart/CartContainer';
 import CheckoutContainer from './pages/Catalog/Checkout/CheckoutContainer';
@@ -12,6 +13,7 @@ const App = () => {
       <Routes>
         <Route element={<MainLayout />}>
           <Route index element={<HomeContainer />} />
+          <Route path="catalogo/:categoryName" element={<Catalog />} />
           <Route path="catalog" element={<CatalogContainer />}>
             <Route path="cart" element={<CartContainer />} />
             <Route path="checkout" element={<CheckoutContainer />} />
