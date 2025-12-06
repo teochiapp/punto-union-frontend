@@ -1,9 +1,21 @@
 :root {
+  /* Typography */
+  --font-header: 'Josefin Sans', sans-serif;
+  --font-body: 'Space Grotesk', sans-serif;
+
+  /* Colors */
+  --color-primary: #DDA448;
+  --color-secondary: #BB342F;
+  --color-background: #FEFCF0;
+  --color-dark-background: #1B1A18;
+  --color-background-overlay: #EDE9DD;
+
+  /* Legacy support */
   color-scheme: light;
-  font-family: 'Inter', 'Segoe UI', sans-serif;
+  font-family: var(--font-body);
   line-height: 1.5;
   font-weight: 400;
-  background: #f5f4f0;
+  background: var(--color-background);
   color: #2c2c2c;
 }
 
