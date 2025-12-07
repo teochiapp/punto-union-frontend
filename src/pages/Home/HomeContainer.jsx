@@ -1,7 +1,7 @@
-import HomeView from './HomeView';
+import Home from './Home';
 
 const HomeContainer = () => {
-  return <HomeView />;
+  return <Home />;
 };
 
 export default HomeContainer;
