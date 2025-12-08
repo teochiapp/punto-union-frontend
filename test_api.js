@@ -28,6 +28,11 @@ async function test() {
                      const firstItem = data.data[0];
                      // Safely stringify
                      output.push(`First item structure: ${JSON.stringify(firstItem, null, 2)}`);
+                     if (firstItem.Portada) {
+                        output.push(`Portada found: ${JSON.stringify(firstItem.Portada, null, 2)}`);
+                     } else {
+                        output.push('Portada is null or undefined on first item');
+                     }
                  }
              } else {
                  output.push('data.data is missing');

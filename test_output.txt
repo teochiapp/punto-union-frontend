@@ -5,11 +5,11 @@ Type of res.data: object
 res.data keys if object: data, meta
 data.data length: 2
 First item structure: {
-  "id": 2,
+  "id": 5,
   "documentId": "uqpeilkr1plshfid3uaeyen8",
   "createdAt": "2025-12-06T22:01:59.884Z",
-  "updatedAt": "2025-12-06T22:01:59.884Z",
-  "publishedAt": "2025-12-06T22:01:59.894Z",
+  "updatedAt": "2025-12-08T19:51:10.142Z",
+  "publishedAt": "2025-12-08T19:51:10.160Z",
   "Nombre": "Corte Americano",
   "Precio": 4000,
   "Descripcion": [
@@ -23,7 +23,52 @@ First item structure: {
       ]
     }
   ],
-  "Portada": null,
+  "Portada": {
+    "id": 9,
+    "documentId": "n56mo3krrx79duar3cd54kyv",
+    "name": "something-special-107958_720x.webp",
+    "alternativeText": null,
+    "caption": null,
+    "width": 720,
+    "height": 360,
+    "formats": {
+      "thumbnail": {
+        "name": "thumbnail_something-special-107958_720x.webp",
+        "hash": "thumbnail_something_special_107958_720x_0632cb2888",
+        "ext": ".webp",
+        "mime": "image/webp",
+        "path": null,
+        "width": 245,
+        "height": 122,
+        "size": 6.26,
+        "sizeInBytes": 6262,
+        "url": "/uploads/thumbnail_something_special_107958_720x_0632cb2888.webp"
+      },
+      "small": {
+        "name": "small_something-special-107958_720x.webp",
+        "hash": "small_something_special_107958_720x_0632cb2888",
+        "ext": ".webp",
+        "mime": "image/webp",
+        "path": null,
+        "width": 500,
+        "height": 250,
+        "size": 23.41,
+        "sizeInBytes": 23406,
+        "url": "/uploads/small_something_special_107958_720x_0632cb2888.webp"
+      }
+    },
+    "hash": "something_special_107958_720x_0632cb2888",
+    "ext": ".webp",
+    "mime": "image/webp",
+    "size": 61.65,
+    "url": "/uploads/something_special_107958_720x_0632cb2888.webp",
+    "previewUrl": null,
+    "provider": "local",
+    "provider_metadata": null,
+    "createdAt": "2025-12-06T22:19:13.641Z",
+    "updatedAt": "2025-12-06T22:19:58.625Z",
+    "publishedAt": "2025-12-06T22:19:13.641Z"
+  },
   "categorias": {
     "id": 34,
     "documentId": "sxjctslsl04oms1g281wlyc6",
@@ -32,4 +77,50 @@ First item structure: {
     "updatedAt": "2025-12-06T22:20:50.505Z",
     "publishedAt": "2025-12-06T22:20:50.514Z"
   }
+}
+Portada found: {
+  "id": 9,
+  "documentId": "n56mo3krrx79duar3cd54kyv",
+  "name": "something-special-107958_720x.webp",
+  "alternativeText": null,
+  "caption": null,
+  "width": 720,
+  "height": 360,
+  "formats": {
+    "thumbnail": {
+      "name": "thumbnail_something-special-107958_720x.webp",
+      "hash": "thumbnail_something_special_107958_720x_0632cb2888",
+      "ext": ".webp",
+      "mime": "image/webp",
+      "path": null,
+      "width": 245,
+      "height": 122,
+      "size": 6.26,
+      "sizeInBytes": 6262,
+      "url": "/uploads/thumbnail_something_special_107958_720x_0632cb2888.webp"
+    },
+    "small": {
+      "name": "small_something-special-107958_720x.webp",
+      "hash": "small_something_special_107958_720x_0632cb2888",
+      "ext": ".webp",
+      "mime": "image/webp",
+      "path": null,
+      "width": 500,
+      "height": 250,
+      "size": 23.41,
+      "sizeInBytes": 23406,
+      "url": "/uploads/small_something_special_107958_720x_0632cb2888.webp"
+    }
+  },
+  "hash": "something_special_107958_720x_0632cb2888",
+  "ext": ".webp",
+  "mime": "image/webp",
+  "size": 61.65,
+  "url": "/uploads/something_special_107958_720x_0632cb2888.webp",
+  "previewUrl": null,
+  "provider": "local",
+  "provider_metadata": null,
+  "createdAt": "2025-12-06T22:19:13.641Z",
+  "updatedAt": "2025-12-06T22:19:58.625Z",
+  "publishedAt": "2025-12-06T22:19:13.641Z"
 }
