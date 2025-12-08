@@ -314,7 +314,7 @@ const Catalog = () => {
         ) : (
           <ProductsGrid>
             {products.map((product) => {
-              const imageUrl = getImageUrl(product.Imagen);
+              const imageUrl = getImageUrl(product.Portada);
               const descriptionText = renderDescription(product.Descripcion);
 
               return (
