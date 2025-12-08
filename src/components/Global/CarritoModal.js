@@ -85,9 +85,9 @@ const CarritoModal = ({ isOpen, onClose, producto, cantidad = 1 }) => {
               <ContinueButton onClick={onClose}>
                 Seguir comprando
               </ContinueButton>
-              <VerCarritoButton onClick={handleVerCarrito}>
+              <ViewCartButton onClick={handleVerCarrito}>
                 Ver carrito
-              </VerCarritoButton>
+              </ViewCartButton>
             </ModalActions>
           </ModalContent>
         </ModalOverlay>
@@ -225,11 +225,12 @@ const ProductName = styled.h4`
   line-height: 1.3;
 `;
 
-const ProductPrice = styled.span`
-  font-family: 'Space Grotesk', sans-serif;
-  font-size: 1.1rem;
+const ProductPrice = styled.p`
+  font-family: var(--font-body);
+  font-size: 1.5rem;
   font-weight: 700;
-  color: var(--primary-color);
+  color: var(--color-secondary-accent);
+  margin: 0.5rem 0;
 `;
 
 const ProductSpecs = styled.div`
@@ -258,14 +259,14 @@ const QuantityText = styled.span`
   font-family: 'Space Grotesk', sans-serif;
   font-size: 0.9rem;
   font-weight: 600;
-  color: var(--primary-color);
+  color: var(--color-secondary-accent);
 `;
 
 const TotalText = styled.span`
   font-family: 'Space Grotesk', sans-serif;
   font-size: 1rem;
   font-weight: 700;
-  color: var(--primary-color);
+  color: var(--color-secondary-accent);
 `;
 
 const ModalActions = styled.div`
@@ -301,23 +302,22 @@ const ContinueButton = styled.button`
   }
 `;
 
-const VerCarritoButton = styled.button`
+const ViewCartButton = styled.button`
   flex: 1;
-  padding: 0.75rem 1.5rem;
-  background: var(--primary-color);
+  padding: 1rem;
+  background: var(--color-secondary-accent);
   color: white;
   border: none;
-  border-radius: 12px;
-  font-family: 'Space Grotesk', sans-serif;
-  font-size: 0.95rem;
+  border-radius: 8px;
+  font-family: var(--font-body);
+  font-size: 1rem;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
-  
+
   &:hover {
     background: var(--color-secondary);
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(221, 164, 72, 0.3);
+    transform: translateY(-2px);
   }
   
   &:active {

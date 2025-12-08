@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import { ShoppingCart } from 'lucide-react';
+import { ShoppingCart, ArrowLeft } from 'lucide-react';
 import { fetchProductos, fetchProductosPorCategoria } from '../../services/api';
 import { useCarrito } from '../../context/CarritoContext';
 import Header from '../../components/Global/Header';
@@ -172,7 +172,9 @@ const ProductDetail = () => {
         <Header />
         <PageContainer>
           <ContentWrapper>
-            <BackButton onClick={() => navigate('/')}>← Volver al inicio</BackButton>
+            <BackButton onClick={() => navigate('/')}>
+              <ArrowLeft size={18} /> Volver al Inicio
+            </BackButton>
             <ErrorMessage>{error || 'Producto no encontrado'}</ErrorMessage>
           </ContentWrapper>
         </PageContainer>
@@ -189,7 +191,9 @@ const ProductDetail = () => {
       <Header />
       <PageContainer>
         <ContentWrapper>
-          <BackButton onClick={() => navigate('/')}>← Volver al inicio</BackButton>
+          <BackButton onClick={() => navigate('/')}>
+            <ArrowLeft size={18} /> Volver al Inicio
+          </BackButton>
 
           <ProductContainer>
             <ImageSection>
@@ -294,21 +298,18 @@ const BackButton = styled.button`
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  padding: 0.75rem 1.5rem;
+  padding: 0.5rem;
   background: transparent;
-  border: 2px solid var(--primary-color);
-  color: var(--primary-color);
-  font-family: var(--font-header);
+  border: none;
+  color: #666;
+  font-family: 'Josefin Sans', sans-serif;
   font-size: 1rem;
-  font-weight: 600;
   cursor: pointer;
-  transition: all 0.3s ease;
-  margin-bottom: 2rem;
-  border-radius: 8px;
+  transition: color 0.3s ease;
+  margin-top: 2rem;
 
   &:hover {
-    background: var(--primary-color);
-    color: white;
+    color: #8B2E2E;
   }
 `;
 
@@ -382,7 +383,7 @@ const ProductPrice = styled.p`
   font-family: var(--font-body);
   font-size: 2rem;
   font-weight: 700;
-  color: var(--primary-color);
+  color: var(--color-secondary-accent);
   margin: 0 0 1.5rem 0;
 `;
 
@@ -420,21 +421,26 @@ const QuantityControls = styled.div`
 const QuantityButton = styled.button`
   width: 36px;
   height: 36px;
-  border-radius: 50%;
-  border: 2px solid var(--primary-color);
-  background: white;
-  color: var(--primary-color);
-  font-size: 1.25rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s ease;
+  border: 2px solid var(--color-secondary-accent);
+  background: transparent;
+  color: var(--color-secondary-accent);
+  border-radius: 8px;
   display: flex;
   align-items: center;
   justify-content: center;
+  cursor: pointer;
+  font-size: 1.25rem;
+  font-weight: 600;
+  transition: all 0.3s ease;
 
-  &:hover {
-    background: var(--primary-color);
+  &:hover:not(:disabled) {
+    background: var(--color-secondary-accent);
     color: white;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
   }
 `;
 
@@ -453,7 +459,7 @@ const AddToCartButton = styled.button`
   justify-content: center;
   gap: 0.5rem;
   padding: 1rem 2rem;
-  background: var(--primary-color);
+  background: var(--color-secondary-accent);
   color: white;
   border: none;
   border-radius: 12px;
@@ -466,7 +472,7 @@ const AddToCartButton = styled.button`
   &:hover {
     background: var(--color-secondary);
     transform: translateY(-2px);
-    box-shadow: 0 8px 24px rgba(221, 164, 72, 0.3);
+    box-shadow: 0 8px 24px rgba(139, 46, 46, 0.3);
   }
 
   &:active {
@@ -548,7 +554,7 @@ const SimilarProductPrice = styled.p`
   font-family: var(--font-body);
   font-size: 1.25rem;
   font-weight: 700;
-  color: var(--primary-color);
+  color: var(--color-secondary-accent);
   margin: 0 0 0.5rem 0;
 `;
 

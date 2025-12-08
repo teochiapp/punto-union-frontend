@@ -198,106 +198,106 @@ const ErrorMessage = styled.p`
 
 // Component
 const Categories = () => {
-    const navigate = useNavigate();
-    const [categories, setCategories] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
+  const navigate = useNavigate();
+  const [categories, setCategories] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-    useEffect(() => {
-        const loadCategories = async () => {
-            try {
-                setLoading(true);
-                const data = await fetchCategorias(9);
-                setCategories(data.data || []);
-                setError(null);
-            } catch (err) {
-                setError('No se pudieron cargar las categorías');
-                console.error(err);
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        loadCategories();
-    }, []);
-
-    const getImageUrl = (portada) => {
-        if (!portada) return null;
-
-        // Strapi returns the image URL directly or in nested structure
-        if (portada.url) {
-            const url = portada.url;
-            return url.startsWith('http') ? url : `http://localhost:1337${url}`;
-        }
-
-        // Handle nested data structure
-        if (portada.data?.attributes?.url) {
-            const url = portada.data.attributes.url;
-            return url.startsWith('http') ? url : `http://localhost:1337${url}`;
-        }
-
-        return null;
+  useEffect(() => {
+    const loadCategories = async () => {
+      try {
+        setLoading(true);
+        const data = await fetchCategorias(9);
+        setCategories(data.data || []);
+        setError(null);
+      } catch (err) {
+        setError('No se pudieron cargar las categorías');
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
     };
 
-    if (loading) {
-        return (
-            <CategoriesSection>
-                <CategoriesContainer>
-                    <CategoriesGrid>
-                        {[...Array(9)].map((_, index) => (
-                            <CategoryCardLoading key={index}>
-                                <CategorySkeleton />
-                            </CategoryCardLoading>
-                        ))}
-                    </CategoriesGrid>
-                </CategoriesContainer>
-            </CategoriesSection>
-        );
+    loadCategories();
+  }, []);
+
+  const getImageUrl = (portada) => {
+    if (!portada) return null;
+
+    // Strapi returns the image URL directly or in nested structure
+    if (portada.url) {
+      const url = portada.url;
+      return url.startsWith('http') ? url : `http://localhost:1337${url}`;
     }
 
-    if (error) {
-        return (
-            <CategoriesSection>
-                <CategoriesContainer>
-                    <ErrorMessage>{error}</ErrorMessage>
-                </CategoriesContainer>
-            </CategoriesSection>
-        );
+    // Handle nested data structure
+    if (portada.data?.attributes?.url) {
+      const url = portada.data.attributes.url;
+      return url.startsWith('http') ? url : `http://localhost:1337${url}`;
     }
 
+    return null;
+  };
+
+  if (loading) {
     return (
-        <CategoriesSection>
-            <CategoriesContainer>
-                <CategoriesGrid>
-                    {categories.map((category) => {
-                        const imageUrl = getImageUrl(category.Portada);
-
-                        return (
-                            <CategoryCard
-                                key={category.id}
-                                onClick={() => navigate(`/catalogo/${encodeURIComponent(category.Nombre)}`)}
-                            >
-                                {imageUrl ? (
-                                    <CategoryBackground
-                                        src={imageUrl}
-                                        alt={category.Nombre || 'Categoría'}
-                                    />
-                                ) : (
-                                    <CategoryBackgroundPlaceholder>
-                                        <span>📦</span>
-                                    </CategoryBackgroundPlaceholder>
-                                )}
-                                <CategoryOverlay />
-                                <CategoryTitle>
-                                    {category.Nombre || 'Sin nombre'}
-                                </CategoryTitle>
-                            </CategoryCard>
-                        );
-                    })}
-                </CategoriesGrid>
-            </CategoriesContainer>
-        </CategoriesSection>
+      <CategoriesSection>
+        <CategoriesContainer>
+          <CategoriesGrid>
+            {[...Array(9)].map((_, index) => (
+              <CategoryCardLoading key={index}>
+                <CategorySkeleton />
+              </CategoryCardLoading>
+            ))}
+          </CategoriesGrid>
+        </CategoriesContainer>
+      </CategoriesSection>
     );
+  }
+
+  if (error) {
+    return (
+      <CategoriesSection>
+        <CategoriesContainer>
+          <ErrorMessage>{error}</ErrorMessage>
+        </CategoriesContainer>
+      </CategoriesSection>
+    );
+  }
+
+  return (
+    <CategoriesSection>
+      <CategoriesContainer>
+        <CategoriesGrid>
+          {categories.map((category) => {
+            const imageUrl = getImageUrl(category.Portada);
+
+            return (
+              <CategoryCard
+                key={category.id}
+                onClick={() => navigate(`/catalogo/${encodeURIComponent(category.Nombre)}`)}
+              >
+                {imageUrl ? (
+                  <CategoryBackground
+                    src={imageUrl}
+                    alt={category.Nombre || 'Categoría'}
+                  />
+                ) : (
+                  <CategoryBackgroundPlaceholder>
+                    <span>📦</span>
+                  </CategoryBackgroundPlaceholder>
+                )}
+                <CategoryOverlay />
+                <CategoryTitle>
+                  {category.Nombre || 'Sin nombre'}
+                </CategoryTitle>
+              </CategoryCard>
+            );
+          })}
+        </CategoriesGrid>
+      </CategoriesContainer>
+    </CategoriesSection>
+  );
 };
 
 export default Categories;

@@ -5,6 +5,7 @@ import Categories from '../../components/Home/Categories/Categories';
 import Sucursales from '../../components/Home/Sucursales/Sucursales';
 import CategoriesMarquee from '../../components/Home/CategoriesMarquee/CategoriesMarquee';
 import Promotions from '../../components/Home/Promotions/Promotions';
+import WhatsAppButton from '../../components/WhatsAppButton/WhatsAppButton';
 
 const Home = () => {
   return (
@@ -14,6 +15,7 @@ const Home = () => {
       <Categories />
       <Sucursales />
       <CategoriesMarquee />
+      <WhatsAppButton />
       <Promotions />
       <Footer />
     </>
