@@ -9,7 +9,7 @@ import Promotions from '../../components/Home/Promotions/Promotions';
 const Home = () => {
   return (
     <>
-      <Header />
+      <Header transparent />
       <Hero />
       <Categories />
       <Sucursales />

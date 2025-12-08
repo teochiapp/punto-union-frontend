@@ -2,11 +2,13 @@ import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { fetchCategorias, fetchProductos, fetchProductosPorCategoria } from '../../services/api';
+import Header from '../../components/Global/Header';
+import Footer from '../../components/Global/Footer';
 
 // Styled Components
 const CatalogSection = styled.section`
   min-height: 60vh;
-  padding: 2rem 0;
+  padding: 5rem 0 2rem 0;
 `;
 
 const CatalogContainer = styled.div`
@@ -243,24 +245,32 @@ const Catalog = () => {
 
   if (loading) {
     return (
-      <CatalogSection>
-        <CatalogContainer>
-          <LoadingState>Cargando productos...</LoadingState>
-        </CatalogContainer>
-      </CatalogSection>
+      <>
+        <Header />
+        <CatalogSection>
+          <CatalogContainer>
+            <LoadingState>Cargando productos...</LoadingState>
+          </CatalogContainer>
+        </CatalogSection>
+        <Footer />
+      </>
     );
   }
 
   if (error) {
     return (
-      <CatalogSection>
-        <CatalogContainer>
-          <BackButton onClick={() => navigate('/')}>
-            ← Volver al inicio
-          </BackButton>
-          <ErrorState>{error}</ErrorState>
-        </CatalogContainer>
-      </CatalogSection>
+      <>
+        <Header />
+        <CatalogSection>
+          <CatalogContainer>
+            <BackButton onClick={() => navigate('/')}>
+              ← Volver al inicio
+            </BackButton>
+            <ErrorState>{error}</ErrorState>
+          </CatalogContainer>
+        </CatalogSection>
+        <Footer />
+      </>
     );
   }
 
@@ -292,56 +302,83 @@ const Catalog = () => {
   };
 
   return (
-    <CatalogSection>
-      <CatalogContainer>
-        <BackButton onClick={() => navigate('/')}>
-          ← Volver al inicio
-        </BackButton>
+    <>
+      <Header />
+      <CatalogSection>
+        <CatalogContainer>
+          <BackButton onClick={() => navigate('/')}>
+            ← Volver al inicio
+          </BackButton>
 
-        <CatalogHeader>
-          <CategoryTitle>
-            {category?.Nombre || 'Categoría'}
-          </CategoryTitle>
-          {category?.Descripcion && (
-            <CategoryDescription>{renderDescription(category.Descripcion)}</CategoryDescription>
+          <CatalogHeader>
+            <CategoryTitle>
+              {category?.Nombre || 'Categoría'}
+            </CategoryTitle>
+            {category?.Descripcion && (
+              <CategoryDescription>{renderDescription(category.Descripcion)}</CategoryDescription>
+            )}
+          </CatalogHeader>
+
+          {products.length === 0 ? (
+            <EmptyState>
+              No hay productos disponibles en esta categoría
+            </EmptyState>
+          ) : (
+            <ProductsGrid>
+              {products.map((product) => {
+                const imageUrl = getImageUrl(product.Portada);
+                const descriptionText = renderDescription(product.Descripcion);
+
+                // Create URL-friendly slug from product name
+                const productSlug = product.Nombre
+                  ? product.Nombre.toLowerCase()
+                    .normalize('NFD')
+                    .replace(/[\u0300-\u036f]/g, '') // Remove accents
+                    .replace(/[^a-z0-9\s-]/g, '') // Remove special chars
+                    .trim()
+                    .replace(/\s+/g, '-') // Replace spaces with hyphens
+                  : `producto-${product.id}`;
+
+                return (
+                  <ProductCard
+                    key={product.id}
+                    onClick={() => navigate(`/producto/${productSlug}`, {
+                      state: {
+                        producto: {
+                          id: product.id,
+                          nombre: product.Nombre,
+                          descripcion: descriptionText,
+                          precio: product.Precio,
+                          imagen: getImageUrl(product.Portada)
+                        }
+                      }
+                    })}
+                  >
+                    {imageUrl ? (
+                      <ProductImage $image={imageUrl} />
+                    ) : (
+                      <ProductImagePlaceholder>
+                        <span>📦</span>
+                      </ProductImagePlaceholder>
+                    )}
+                    <ProductInfo>
+                      <ProductName>{product.Nombre || 'Producto'}</ProductName>
+                      {product.Precio && (
+                        <ProductPrice>${product.Precio}</ProductPrice>
+                      )}
+                      {descriptionText && (
+                        <ProductDescription>{descriptionText}</ProductDescription>
+                      )}
+                    </ProductInfo>
+                  </ProductCard>
+                );
+              })}
+            </ProductsGrid>
           )}
-        </CatalogHeader>
-
-        {products.length === 0 ? (
-          <EmptyState>
-            No hay productos disponibles en esta categoría
-          </EmptyState>
-        ) : (
-          <ProductsGrid>
-            {products.map((product) => {
-              const imageUrl = getImageUrl(product.Portada);
-              const descriptionText = renderDescription(product.Descripcion);
-
-              return (
-                <ProductCard key={product.id} onClick={() => console.log('Product clicked:', product.id)}>
-                  {imageUrl ? (
-                    <ProductImage $image={imageUrl} />
-                  ) : (
-                    <ProductImagePlaceholder>
-                      <span>📦</span>
-                    </ProductImagePlaceholder>
-                  )}
-                  <ProductInfo>
-                    <ProductName>{product.Nombre || 'Producto'}</ProductName>
-                    {product.Precio && (
-                      <ProductPrice>${product.Precio}</ProductPrice>
-                    )}
-                    {descriptionText && (
-                      <ProductDescription>{descriptionText}</ProductDescription>
-                    )}
-                  </ProductInfo>
-                </ProductCard>
-              );
-            })}
-          </ProductsGrid>
-        )}
-      </CatalogContainer>
-    </CatalogSection>
+        </CatalogContainer>
+      </CatalogSection>
+      <Footer />
+    </>
   );
 };
 

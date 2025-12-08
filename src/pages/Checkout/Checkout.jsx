@@ -1,0 +1,499 @@
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
+import { useCarrito } from '../../context/CarritoContext';
+import Header from '../../components/Global/Header';
+import Footer from '../../components/Global/Footer';
+
+const CheckoutPage = () => {
+    const { items, totalItems, totalPrice, clearCart } = useCarrito();
+    const navigate = useNavigate();
+
+    const [formData, setFormData] = useState({
+        nombre: '',
+        apellido: '',
+        email: '',
+        telefono: ''
+    });
+
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        setFormData(prev => ({
+            ...prev,
+            [name]: value
+        }));
+    };
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+
+        if (!formData.nombre || !formData.apellido || !formData.email || !formData.telefono) {
+            alert('Por favor, completa todos los campos obligatorios');
+            return;
+        }
+
+        const mensaje = generarMensajeWhatsApp();
+        const numeroWhatsApp = '5493513797137';
+        const urlWhatsApp = `https://wa.me/${numeroWhatsApp}?text=${encodeURIComponent(mensaje)}`;
+
+        window.open(urlWhatsApp, '_blank');
+        clearCart();
+        navigate('/');
+    };
+
+    const generarMensajeWhatsApp = () => {
+        const nombreCompleto = `${formData.nombre} ${formData.apellido}`;
+
+        let mensaje = `Hola, buen día! soy ${nombreCompleto}. Quisiera confirmar el siguiente pedido para proceder al pago:\n\n`;
+
+        mensaje += `Resumen del pedido\n`;
+        items.forEach((item, index) => {
+            if (items.length > 1) mensaje += `${index + 1}) `;
+            mensaje += `${item.nombre}`;
+            if (item.color) mensaje += ` — Color: ${item.color}`;
+            if (item.talle) mensaje += ` — Talla: ${item.talle}`;
+            mensaje += ` — Cantidad: ${item.quantity} — $${item.precio}\n`;
+        });
+
+        mensaje += `\nEnvío: A coordinar\n`;
+        mensaje += `Total a pagar: $${Math.round(totalPrice)}\n\n`;
+
+        mensaje += `Datos de contacto\n`;
+        mensaje += `• Nombre: ${nombreCompleto}\n`;
+        mensaje += `• Teléfono: ${formData.telefono}\n`;
+        mensaje += `• Email: ${formData.email}\n\n`;
+
+        mensaje += `Siguiente paso: por favor, envíenme el link de pago o el método disponible (MercadoPago / transferencia / pago en efectivo). Respondo "CONFIRMO" si todo está correcto y quiero que me envíen el link.\n\n`;
+
+        mensaje += `Muchas gracias — quedo atenta ✨`;
+
+        return mensaje;
+    };
+
+    if (items.length === 0) {
+        return (
+            <>
+                <Header />
+                <PageContainer>
+                    <EmptyCartContainer>
+                        <EmptyCartIcon>🛒</EmptyCartIcon>
+                        <EmptyCartTitle>Tu carrito está vacío</EmptyCartTitle>
+                        <EmptyCartMessage>
+                            Agrega algunos productos para proceder al checkout
+                        </EmptyCartMessage>
+                        <ContinueShoppingButton onClick={() => navigate('/')}>
+                            Ir al catálogo
+                        </ContinueShoppingButton>
+                    </EmptyCartContainer>
+                </PageContainer>
+                <Footer />
+            </>
+        );
+    }
+
+    return (
+        <>
+            <Header />
+            <PageContainer>
+                <Breadcrumb>
+                    <BreadcrumbButton onClick={() => navigate('/')}>Catálogo</BreadcrumbButton>
+                    <BreadcrumbSeparator>
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                            <path d="M6 12L10 8L6 4" stroke="#BEBCBD" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                        </svg>
+                    </BreadcrumbSeparator>
+                    <BreadcrumbButton onClick={() => navigate('/carrito')}>Carrito</BreadcrumbButton>
+                    <BreadcrumbSeparator>
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                            <path d="M6 12L10 8L6 4" stroke="#BEBCBD" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                        </svg>
+                    </BreadcrumbSeparator>
+                    <BreadcrumbCurrent>Pagar</BreadcrumbCurrent>
+                </Breadcrumb>
+
+                <CheckoutContainer>
+                    <CheckoutForm onSubmit={handleSubmit}>
+                        <FormSection>
+                            <FormTitle>Completá tu información</FormTitle>
+
+                            <FormGroup>
+                                <Input
+                                    type="text"
+                                    id="nombre"
+                                    name="nombre"
+                                    value={formData.nombre}
+                                    onChange={handleInputChange}
+                                    placeholder="Nombre/s"
+                                    required
+                                />
+                                <Label htmlFor="nombre">Nombre*</Label>
+                            </FormGroup>
+
+                            <FormGroup>
+                                <Input
+                                    type="text"
+                                    id="apellido"
+                                    name="apellido"
+                                    value={formData.apellido}
+                                    onChange={handleInputChange}
+                                    placeholder="Apellido/s"
+                                    required
+                                />
+                                <Label htmlFor="apellido">Apellido*</Label>
+                            </FormGroup>
+
+                            <FormGroup>
+                                <Input
+                                    type="email"
+                                    id="email"
+                                    name="email"
+                                    value={formData.email}
+                                    onChange={handleInputChange}
+                                    placeholder="ejemplo@email.com"
+                                    required
+                                />
+                                <Label htmlFor="email">Email*</Label>
+                            </FormGroup>
+
+                            <FormGroup>
+                                <Input
+                                    type="tel"
+                                    id="telefono"
+                                    name="telefono"
+                                    value={formData.telefono}
+                                    onChange={handleInputChange}
+                                    placeholder="+54 9 351 12345"
+                                    required
+                                />
+                                <Label htmlFor="telefono">Número de teléfono*</Label>
+                            </FormGroup>
+                        </FormSection>
+
+                        <OrderSection>
+                            <OrderCard>
+                                <OrderTitle>Tu pedido</OrderTitle>
+
+                                <MessagePreview>
+                                    <MessageText>
+                                        Hola, buen día! soy {formData.nombre && formData.apellido ? `${formData.nombre} ${formData.apellido}` : ''}. Quisiera confirmar el siguiente pedido para proceder al pago:
+                                    </MessageText>
+
+                                    <MessageText>
+                                        <strong>Resumen del pedido</strong>
+                                        <br />
+                                        {items.map((item, index) => (
+                                            <span key={item.id}>
+                                                {items.length > 1 && `${index + 1}) `}{item.nombre}
+                                                {item.color && ` — Color: ${item.color}`}
+                                                {item.talle && ` — Talla: ${item.talle}`}
+                                                {` — Cantidad: ${item.quantity} — $${item.precio}`}
+                                                <br />
+                                            </span>
+                                        ))}
+                                    </MessageText>
+
+                                    <MessageText>
+                                        Envío: A coordinar
+                                        <br />
+                                        Total a pagar: <strong>${Math.round(totalPrice)}</strong>
+                                    </MessageText>
+
+                                    <MessageText>
+                                        <strong>Datos de contacto</strong>
+                                        <br />
+                                        • Nombre: {formData.nombre} {formData.apellido}
+                                        <br />
+                                        • Teléfono: {formData.telefono}
+                                        <br />
+                                        • Email: {formData.email}
+                                    </MessageText>
+
+                                    <MessageText>
+                                        <strong>Siguiente paso:</strong> por favor, envíenme el link de pago o el método disponible (MercadoPago / transferencia / pago en efectivo). Respondo "CONFIRMO" si todo está correcto y quiero que me envíen el link.
+                                    </MessageText>
+
+                                    <MessageText>
+                                        Muchas gracias — quedo atenta ✨
+                                    </MessageText>
+
+                                </MessagePreview>
+                            </OrderCard>
+
+                            <SendButton type="submit">
+                                Enviar
+                                <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+                                    <path d="M1 8h14M8 1l7 7-7 7" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                                </svg>
+                            </SendButton>
+                        </OrderSection>
+                    </CheckoutForm>
+                </CheckoutContainer>
+            </PageContainer>
+            <Footer />
+        </>
+    );
+};
+
+export default CheckoutPage;
+
+// Styled Components
+const PageContainer = styled.div`
+  min-height: 100vh;
+  background-color: var(--color-background);
+  padding: 5rem 0 2rem 0;
+`;
+
+const Breadcrumb = styled.div`
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem 2rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+
+  @media (max-width: 768px) {
+    padding: 0 1rem 1.5rem;
+    font-size: 0.8rem;
+  }
+`;
+
+const BreadcrumbButton = styled.button`
+  background: none;
+  border: none;
+  color: #BEBCBD;
+  text-decoration: none;
+  transition: color 0.3s ease;
+  cursor: pointer;
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  padding: 0;
+  
+  &:hover {
+    color: var(--primary-color);
+  }
+`;
+
+const BreadcrumbSeparator = styled.span`
+  color: #BEBCBD;
+  display: flex;
+  align-items: center;
+`;
+
+const BreadcrumbCurrent = styled.span`
+  color: var(--text-primary);
+  font-weight: 500;
+`;
+
+const CheckoutContainer = styled.div`
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
+
+  @media (max-width: 768px) {
+    padding: 0 1rem;
+  }
+`;
+
+const CheckoutForm = styled.form`
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+
+  @media (max-width: 992px) {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+`;
+
+const FormSection = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+`;
+
+const FormTitle = styled.h1`
+  font-family: var(--font-header);
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0 0 1rem 0;
+
+  @media (max-width: 768px) {
+    font-size: 1.8rem;
+  }
+`;
+
+const FormGroup = styled.div`
+  position: relative;
+  display: flex;
+  flex-direction: column;
+`;
+
+const Label = styled.label`
+  position: absolute;
+  top: -8px;
+  left: 12px;
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+  background: var(--color-background);
+  padding: 0 6px;
+  pointer-events: none;
+`;
+
+const Input = styled.input`
+  padding: 1rem;
+  border: 1px solid rgba(0,0,0, 0.5);
+  border-radius: 8px;
+  font-family: var(--font-body);
+  font-size: 1rem;
+  transition: border-color 0.3s ease;
+  background: var(--color-background);
+
+  &:focus {
+    outline: none;
+    border-color: var(--primary-color);
+  }
+
+  &::placeholder {
+    color: #9ca3af;
+  }
+`;
+
+const OrderSection = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1.5rem;
+  width: 100%;
+  max-width: 650px;
+  margin: 0 auto;
+`;
+
+const OrderCard = styled.div`
+  background: var(--color-background-overlay);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+  width: 100%;
+  padding: 24px;
+  border-radius: 24px;
+  max-width: 650px;
+
+  @media (max-width: 768px) {
+    padding: 1.5rem;
+  }
+`;
+
+const OrderTitle = styled.h2`
+  font-family: var(--font-header);
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0 0 1.5rem 0;
+`;
+
+const MessagePreview = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+`;
+
+const MessageText = styled.p`
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  color: var(--text-primary);
+  line-height: 1.6;
+  margin: 0;
+  white-space: pre-line;
+
+  strong {
+    font-weight: 600;
+    color: var(--text-primary);
+  }
+`;
+
+const SendButton = styled.button`
+  padding: 12px 40px;
+  background: var(--primary-color);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-family: var(--font-header);
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  
+  &:hover {
+    background: var(--color-secondary);
+    transform: translateY(-1px);
+  }
+  
+  &:active {
+    transform: translateY(0);
+  }
+
+  @media (max-width: 768px) {
+    width: 100%;
+  }
+`;
+
+const EmptyCartContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 60vh;
+  text-align: center;
+  padding: 2rem;
+`;
+
+const EmptyCartIcon = styled.div`
+  font-size: 4rem;
+  margin-bottom: 1rem;
+  opacity: 0.5;
+`;
+
+const EmptyCartTitle = styled.h2`
+  font-family: var(--font-header);
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 1rem;
+`;
+
+const EmptyCartMessage = styled.p`
+  font-family: var(--font-body);
+  font-size: 1.1rem;
+  color: var(--text-secondary);
+  margin-bottom: 2rem;
+`;
+
+const ContinueShoppingButton = styled.button`
+  padding: 12px 40px;
+  background: var(--primary-color);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-family: var(--font-header);
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  
+  &:hover {
+    background: var(--color-secondary);
+    transform: translateY(-1px);
+  }
+`;

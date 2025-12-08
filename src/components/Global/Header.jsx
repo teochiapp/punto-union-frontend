@@ -1,30 +1,34 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { User, ShoppingCart, Menu, X } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 const HeaderContainer = styled.header`
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
-  padding: 2rem 3rem;
   display: grid;
   grid-template-columns: 1fr auto 1fr;
   align-items: center;
   z-index: 50;
   transition: all 0.3s ease;
-  background-color: ${({ $isScrolled }) => ($isScrolled ? '#fdf7e9' : 'transparent')};
-  color: ${({ $isScrolled }) => ($isScrolled ? '#1B1A18' : '#fff')};
-  box-shadow: ${({ $isScrolled }) => ($isScrolled ? '0 2px 10px rgba(0,0,0,0.1)' : 'none')};
-  padding: ${({ $isScrolled }) => ($isScrolled ? '0.5rem 3rem' : '2rem 3rem')};
+  background-color: ${({ $isScrolled, $transparent }) =>
+    ($transparent && !$isScrolled) ? 'transparent' : '#fdf7e9'};
+  color: ${({ $isScrolled, $transparent }) =>
+    ($transparent && !$isScrolled) ? '#fff' : '#1B1A18'};
+  box-shadow: ${({ $isScrolled, $transparent }) =>
+    ($transparent && !$isScrolled) ? 'none' : '0 2px 10px rgba(0,0,0,0.1)'};
+  padding: ${({ $transparent }) =>
+    $transparent ? '1.5rem 3rem' : '0.75rem 3rem'};
 
   font-family: 'Josefin Sans', sans-serif;
 
   @media (max-width: 768px) {
-    padding: 1.5rem;
     gap: 1rem;
     grid-template-columns: 1fr auto 1fr;
-    padding: ${({ $isScrolled }) => ($isScrolled ? '1rem 1.5rem' : '1.5rem')};
+    padding: ${({ $transparent }) =>
+    $transparent ? '1rem 1.5rem' : '0.75rem 1.5rem'};
   }
 `;
 
@@ -38,15 +42,19 @@ const Nav = styled.nav`
   }
 `;
 
-const NavLink = styled.a`
+const NavLink = styled.button`
   text-decoration: none;
   color: inherit;
+  background: none;
+  border: none;
   font-size: 0.9rem;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 2px;
   position: relative;
   transition: opacity 0.3s ease;
+  cursor: pointer;
+  padding: 0;
 
   &:hover {
     opacity: 0.8;
@@ -80,7 +88,7 @@ const CenterGroup = styled.div`
   }
 `;
 
-const Logo = styled.div`
+const Logo = styled.button`
   font-family: 'Josefin Sans', sans-serif;
   font-size: 1.8rem;
   font-weight: 700;
@@ -90,6 +98,16 @@ const Logo = styled.div`
   white-space: nowrap;
   display: flex;
   flex-direction: column;
+  background: none;
+  border: none;
+  color: inherit;
+  cursor: pointer;
+  padding: 0;
+  transition: opacity 0.3s ease;
+
+  &:hover {
+    opacity: 0.8;
+  }
 
   span {
     font-size: 0.7em;
@@ -161,75 +179,76 @@ const MobileLink = styled(NavLink)`
   color: #fff; /* Force white in mobile menu */
 `;
 
-const Header = () => {
-    const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-    const [isScrolled, setIsScrolled] = useState(false);
+const Header = ({ transparent = false }) => {
+  const navigate = useNavigate();
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
 
-    const toggleMenu = () => setIsMobileMenuOpen(!isMobileMenuOpen);
+  const toggleMenu = () => setIsMobileMenuOpen(!isMobileMenuOpen);
 
-    useEffect(() => {
-        const handleScroll = () => {
-            if (window.scrollY > 50) {
-                setIsScrolled(true);
-            } else {
-                setIsScrolled(false);
-            }
-        };
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 50) {
+        setIsScrolled(true);
+      } else {
+        setIsScrolled(false);
+      }
+    };
 
-        window.addEventListener('scroll', handleScroll);
-        return () => window.removeEventListener('scroll', handleScroll);
-    }, []);
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
-    return (
-        <HeaderContainer $isScrolled={isScrolled}>
-            {/* Mobile Menu Button - Left on Mobile */}
-            <MobileMenuBtn onClick={toggleMenu} aria-label="Toggle menu">
-                <Menu size={24} />
-            </MobileMenuBtn>
+  return (
+    <HeaderContainer $isScrolled={isScrolled} $transparent={transparent}>
+      {/* Mobile Menu Button - Left on Mobile */}
+      <MobileMenuBtn onClick={toggleMenu} aria-label="Toggle menu">
+        <Menu size={24} />
+      </MobileMenuBtn>
 
-            {/* Center Group: Nav Left + Logo + Nav Right */}
-            <CenterGroup>
-                <Nav>
-                    <NavLink href="#Nosotros">Nosotros</NavLink>
-                    <NavLink href="#Reservas">Reservas</NavLink>
-                </Nav>
+      {/* Center Group: Nav Left + Logo + Nav Right */}
+      <CenterGroup>
+        <Nav>
+          <NavLink onClick={() => navigate('/nosotros')}>Nosotros</NavLink>
+          <NavLink onClick={() => navigate('/reservas')}>Reservas</NavLink>
+        </Nav>
 
-                <Logo>Punto Union <span>Market</span></Logo>
+        <Logo onClick={() => navigate('/')}>Punto Union <span>Market</span></Logo>
 
-                <Nav>
-                    <NavLink href="#Sucursales">Sucursales</NavLink>
-                    <NavLink href="#Contacto">Contacto</NavLink>
-                </Nav>
-            </CenterGroup>
+        <Nav>
+          <NavLink onClick={() => navigate('/sucursales')}>Sucursales</NavLink>
+          <NavLink onClick={() => navigate('/contacto')}>Contacto</NavLink>
+        </Nav>
+      </CenterGroup>
 
-            <Actions>
-                <ActionButton aria-label="User account">
-                    <User size={20} strokeWidth={1.5} />
-                </ActionButton>
-                <ActionButton aria-label="Shopping cart">
-                    <ShoppingCart size={20} strokeWidth={1.5} />
-                </ActionButton>
-            </Actions>
+      <Actions>
+        <ActionButton aria-label="User account">
+          <User size={20} strokeWidth={1.5} />
+        </ActionButton>
+        <ActionButton aria-label="Shopping cart">
+          <ShoppingCart size={20} strokeWidth={1.5} />
+        </ActionButton>
+      </Actions>
 
-            {/* Mobile Navigation Overlay */}
-            <MobileNav $isOpen={isMobileMenuOpen}>
-                <MobileMenuBtn
-                    onClick={toggleMenu}
-                    style={{ position: 'absolute', top: '2rem', right: '2rem', color: '#fff' }}
-                >
-                    <X size={32} />
-                </MobileMenuBtn>
+      {/* Mobile Navigation Overlay */}
+      <MobileNav $isOpen={isMobileMenuOpen}>
+        <MobileMenuBtn
+          onClick={toggleMenu}
+          style={{ position: 'absolute', top: '2rem', right: '2rem', color: '#fff' }}
+        >
+          <X size={32} />
+        </MobileMenuBtn>
 
-                {/* Mobile Logo copy is optional but good for branding */}
-                <Logo style={{ display: 'flex', color: '#fff' }}>Punto Union <span>Market</span></Logo>
+        {/* Mobile Logo copy is optional but good for branding */}
+        <Logo onClick={() => { navigate('/'); toggleMenu(); }} style={{ display: 'flex', color: '#fff' }}>Punto Union <span>Market</span></Logo>
 
-                <MobileLink href="#Nosotros" onClick={toggleMenu}>Nosotros</MobileLink>
-                <MobileLink href="#Reservas" onClick={toggleMenu}>Reservas</MobileLink>
-                <MobileLink href="#Sucursales" onClick={toggleMenu}>Sucursales</MobileLink>
-                <MobileLink href="#Contacto" onClick={toggleMenu}>Contacto</MobileLink>
-            </MobileNav>
-        </HeaderContainer>
-    );
+        <MobileLink onClick={() => { navigate('/nosotros'); toggleMenu(); }}>Nosotros</MobileLink>
+        <MobileLink onClick={() => { navigate('/reservas'); toggleMenu(); }}>Reservas</MobileLink>
+        <MobileLink onClick={() => { navigate('/sucursales'); toggleMenu(); }}>Sucursales</MobileLink>
+        <MobileLink onClick={() => { navigate('/contacto'); toggleMenu(); }}>Contacto</MobileLink>
+      </MobileNav>
+    </HeaderContainer>
+  );
 };
 
 export default Header;
