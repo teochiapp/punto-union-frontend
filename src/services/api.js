@@ -45,7 +45,7 @@ export const fetchProductosPorCategoria = async (categoriaId) => {
   try {
     const response = await api.get('/productos', {
       params: {
-        'filters[categoria][id][$eq]': categoriaId,
+        'filters[categorias][id][$eq]': categoriaId,
         'populate': '*',
       },
     });
