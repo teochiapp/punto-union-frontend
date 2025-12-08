@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import { fetchCategorias, fetchProductos } from '../../services/api';
+import { fetchCategorias, fetchProductos, fetchProductosPorCategoria } from '../../services/api';
 
 // Styled Components
 const CatalogSection = styled.section`
@@ -207,15 +207,11 @@ const Catalog = () => {
 
         setCategory(matchedCategory);
 
-        // Fetch all products and filter by category
-        const productsData = await fetchProductos();
-        const filteredProducts = productsData.data?.filter(product => {
-          // Check if product has categoria relationship
-          const productCategoryId = product.categoria?.data?.id || product.categoria?.id;
-          return productCategoryId === matchedCategory.id;
-        }) || [];
+        // Fetch products by specific category
+        const productsData = await fetchProductosPorCategoria(matchedCategory.id);
+        const products = productsData.data || [];
 
-        setProducts(filteredProducts);
+        setProducts(products);
       } catch (err) {
         console.error('Error loading catalog:', err);
         setError('No se pudieron cargar los productos');
@@ -268,6 +264,33 @@ const Catalog = () => {
     );
   }
 
+  const renderDescription = (descripcion) => {
+    if (!descripcion) return null;
+
+    // Check if it's an array (Strapi blocks format)
+    if (Array.isArray(descripcion)) {
+      // Extract text from the first paragraph that has text
+      for (const block of descripcion) {
+        if (block.type === 'paragraph' && block.children) {
+          const text = block.children
+            .map(child => child.text)
+            .join(' ')
+            .trim();
+
+          if (text) return text;
+        }
+      }
+      return null;
+    }
+
+    // If it's a string, just return it
+    if (typeof descripcion === 'string') {
+      return descripcion;
+    }
+
+    return null;
+  };
+
   return (
     <CatalogSection>
       <CatalogContainer>
@@ -280,7 +303,7 @@ const Catalog = () => {
             {category?.Nombre || 'Categoría'}
           </CategoryTitle>
           {category?.Descripcion && (
-            <CategoryDescription>{category.Descripcion}</CategoryDescription>
+            <CategoryDescription>{renderDescription(category.Descripcion)}</CategoryDescription>
           )}
         </CatalogHeader>
 
@@ -292,9 +315,10 @@ const Catalog = () => {
           <ProductsGrid>
             {products.map((product) => {
               const imageUrl = getImageUrl(product.Imagen);
+              const descriptionText = renderDescription(product.Descripcion);
 
               return (
-                <ProductCard key={product.id}>
+                <ProductCard key={product.id} onClick={() => console.log('Product clicked:', product.id)}>
                   {imageUrl ? (
                     <ProductImage $image={imageUrl} />
                   ) : (
@@ -307,8 +331,8 @@ const Catalog = () => {
                     {product.Precio && (
                       <ProductPrice>${product.Precio}</ProductPrice>
                     )}
-                    {product.Descripcion && (
-                      <ProductDescription>{product.Descripcion}</ProductDescription>
+                    {descriptionText && (
+                      <ProductDescription>{descriptionText}</ProductDescription>
                     )}
                   </ProductInfo>
                 </ProductCard>

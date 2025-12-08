@@ -1,0 +1,35 @@
+Fetching products...
+URL: http://localhost:1337/api/productos?filters[categorias][id][$eq]=34&populate=*
+Response status: 200
+Type of res.data: object
+res.data keys if object: data, meta
+data.data length: 2
+First item structure: {
+  "id": 2,
+  "documentId": "uqpeilkr1plshfid3uaeyen8",
+  "createdAt": "2025-12-06T22:01:59.884Z",
+  "updatedAt": "2025-12-06T22:01:59.884Z",
+  "publishedAt": "2025-12-06T22:01:59.894Z",
+  "Nombre": "Corte Americano",
+  "Precio": 4000,
+  "Descripcion": [
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "text": "Corte clásico argentino americano a la parrilla"
+        }
+      ]
+    }
+  ],
+  "Portada": null,
+  "categorias": {
+    "id": 34,
+    "documentId": "sxjctslsl04oms1g281wlyc6",
+    "Nombre": "Parrilla",
+    "createdAt": "2025-12-06T22:01:09.120Z",
+    "updatedAt": "2025-12-06T22:20:50.505Z",
+    "publishedAt": "2025-12-06T22:20:50.514Z"
+  }
+}

@@ -102,7 +102,7 @@ const BranchYear = styled.div`
   font-family: var(--font-header);
   font-size: 3.5rem;
   font-weight: 700;
-  color: #DDA448;
+  color: var(--color-primary);
   line-height: 1;
   margin-bottom: 0.5rem;
   text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);
