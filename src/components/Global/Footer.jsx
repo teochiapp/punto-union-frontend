@@ -210,11 +210,6 @@ const Footer = () => {
           <FooterLink href="#promociones">Promociones</FooterLink>
         </ColumnRight>
       </FooterContainer>
-
-      {/* Visual accessibility circle match from reference */}
-      <AccessibilityIcon>
-        <span style={{ fontSize: '1.2rem' }}>★</span>
-      </AccessibilityIcon>
     </>
   );
 };

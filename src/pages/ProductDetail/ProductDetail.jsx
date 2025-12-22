@@ -230,7 +230,7 @@ const ProductDetail = () => {
           {/* Similar Products Section */}
           {similarProducts.length > 0 && (
             <SimilarProductsSection>
-              <SectionTitle>Productos Similares</SectionTitle>
+              <SimilarItemsTitle>Productos Similares</SimilarItemsTitle>
               <SimilarProductsGrid>
                 {similarProducts.map((similarProduct) => {
                   const similarImageUrl = getImageUrl(similarProduct.Portada);
@@ -485,12 +485,14 @@ const SimilarProductsSection = styled.div`
   margin-top: 3rem;
 `;
 
-const SectionTitle = styled.h2`
+const SimilarItemsTitle = styled.h2`
   font-family: var(--font-header);
   font-size: 2rem;
   font-weight: 700;
-  color: var(--text-primary);
+  color: var(--primary-color-accent);
   margin-bottom: 2rem;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
   text-align: center;
 `;
 

@@ -5,6 +5,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { ShoppingCart, ArrowLeft, Loader2, AlertCircle } from 'lucide-react';
 import Header from '../../components/Global/Header';
 import Footer from '../../components/Global/Footer';
+import CarritoModal from '../../components/Global/CarritoModal';
+import { useCarrito } from '../../context/CarritoContext';
 
 import WhatsAppButton from '../../components/WhatsAppButton/WhatsAppButton';
 import { fetchCategorias, fetchProductosPorCategoria } from '../../services/api';
@@ -338,7 +340,7 @@ const renderDescription = (descripcion) => {
 };
 
 // --- Product Card Component with Local State ---
-const ProductCardComponent = ({ product, variants, onProductClick }) => {
+const ProductCardComponent = ({ product, variants, onProductClick, addItem, setShowModal, setModalProduct, setModalQuantity }) => {
   const [quantity, setQuantity] = useState(1);
 
   const handleIncrement = (e) => {
@@ -355,8 +357,26 @@ const ProductCardComponent = ({ product, variants, onProductClick }) => {
 
   const handleAddToCart = (e) => {
     e.stopPropagation();
-    console.log(`Add to cart: ${product.Nombre}, Quantity: ${quantity}kg`);
-    // Here you would call your cart context/function
+    const imageUrl = getImageUrl(product.Portada);
+
+    addItem({
+      id: product.id,
+      nombre: product.Nombre,
+      precio: product.Precio,
+      imagen: imageUrl,
+      quantity: quantity
+    });
+
+    setModalProduct({
+      nombre: product.Nombre,
+      precio: product.Precio,
+      imagen: imageUrl
+    });
+
+    setModalQuantity(quantity);
+    setShowModal(true);
+    // Reset quantity after adding to cart
+    setQuantity(1);
   };
 
   const imageUrl = getImageUrl(product.Portada);
@@ -371,7 +391,7 @@ const ProductCardComponent = ({ product, variants, onProductClick }) => {
         {imageUrl ? (
           <ProductImage src={imageUrl} alt={product.Nombre} />
         ) : (
-          <NoImage>Todo</NoImage>
+          <NoImage>📦</NoImage>
         )}
       </ImageContainer>
 
@@ -406,10 +426,14 @@ const ProductCardComponent = ({ product, variants, onProductClick }) => {
 const Catalog = () => {
   const { categoryName } = useParams();
   const navigate = useNavigate();
+  const { addItem } = useCarrito();
   const [products, setProducts] = useState([]);
   const [category, setCategory] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [showModal, setShowModal] = useState(false);
+  const [modalProduct, setModalProduct] = useState(null);
+  const [modalQuantity, setModalQuantity] = useState(1);
 
   useEffect(() => {
     const loadData = async () => {
@@ -476,6 +500,10 @@ const Catalog = () => {
     });
   };
 
+  const handleCloseModal = () => {
+    setShowModal(false);
+  };
+
   return (
     <PageWrapper>
       <Header />
@@ -530,6 +558,10 @@ const Catalog = () => {
                         product={product}
                         variants={itemVariants}
                         onProductClick={handleProductClick}
+                        addItem={addItem}
+                        setShowModal={setShowModal}
+                        setModalProduct={setModalProduct}
+                        setModalQuantity={setModalQuantity}
                       />
                     ))}
                   </ProductsGrid>
@@ -544,6 +576,13 @@ const Catalog = () => {
 
       <WhatsAppButton />
       <Footer />
+
+      <CarritoModal
+        isOpen={showModal}
+        onClose={handleCloseModal}
+        producto={modalProduct}
+        cantidad={modalQuantity}
+      />
     </PageWrapper>
   );
 };

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { User, ShoppingCart, Menu, X } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { useCarrito } from '../../context/CarritoContext';
 
 const HeaderContainer = styled.header`
   position: fixed;
@@ -20,7 +21,7 @@ const HeaderContainer = styled.header`
   box-shadow: ${({ $isScrolled, $transparent }) =>
     ($transparent && !$isScrolled) ? 'none' : '0 2px 10px rgba(0,0,0,0.1)'};
   padding: ${({ $transparent }) =>
-    $transparent ? '1.5rem 3rem' : '0.75rem 3rem'};
+    $transparent ? '0.5rem 3rem' : '0.75rem 3rem'};
 
   font-family: 'Josefin Sans', sans-serif;
 
@@ -137,6 +138,7 @@ const ActionButton = styled.button`
   align-items: center;
   justify-content: center;
   transition: transform 0.2s ease;
+  position: relative;
 
   &:hover {
     transform: scale(1.1);
@@ -145,6 +147,26 @@ const ActionButton = styled.button`
   &:focus {
     outline: none;
   }
+`;
+
+const CartBadge = styled.span`
+  position: absolute;
+  top: 0;
+  right: 0;
+  background: #8B2E2E;
+  color: white;
+  border-radius: 50%;
+  width: 18px;
+  height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.7rem;
+  font-weight: 700;
+  font-family: 'Josefin Sans', sans-serif;
+  border: 2px solid ${({ $isScrolled, $transparent }) =>
+    ($transparent && !$isScrolled) ? 'transparent' : '#fdf7e9'};
+  transition: border-color 0.3s ease;
 `;
 
 const MobileMenuBtn = styled(ActionButton)`
@@ -181,6 +203,7 @@ const MobileLink = styled(NavLink)`
 
 const Header = ({ transparent = false }) => {
   const navigate = useNavigate();
+  const { totalItems } = useCarrito();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
 
@@ -225,8 +248,13 @@ const Header = ({ transparent = false }) => {
         <ActionButton aria-label="User account">
           <User size={20} strokeWidth={1.5} />
         </ActionButton>
-        <ActionButton aria-label="Shopping cart">
+        <ActionButton onClick={() => navigate('/carrito')} aria-label="Shopping cart">
           <ShoppingCart size={20} strokeWidth={1.5} />
+          {totalItems > 0 && (
+            <CartBadge $isScrolled={isScrolled} $transparent={transparent}>
+              {totalItems}
+            </CartBadge>
+          )}
         </ActionButton>
       </Actions>
 

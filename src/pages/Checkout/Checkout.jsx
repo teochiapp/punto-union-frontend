@@ -6,232 +6,232 @@ import Header from '../../components/Global/Header';
 import Footer from '../../components/Global/Footer';
 
 const CheckoutPage = () => {
-    const { items, totalItems, totalPrice, clearCart } = useCarrito();
-    const navigate = useNavigate();
+  const { items, totalItems, totalPrice, clearCart } = useCarrito();
+  const navigate = useNavigate();
 
-    const [formData, setFormData] = useState({
-        nombre: '',
-        apellido: '',
-        email: '',
-        telefono: ''
-    });
+  const [formData, setFormData] = useState({
+    nombre: '',
+    apellido: '',
+    email: '',
+    telefono: ''
+  });
 
-    const handleInputChange = (e) => {
-        const { name, value } = e.target;
-        setFormData(prev => ({
-            ...prev,
-            [name]: value
-        }));
-    };
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
+  const handleSubmit = (e) => {
+    e.preventDefault();
 
-        if (!formData.nombre || !formData.apellido || !formData.email || !formData.telefono) {
-            alert('Por favor, completa todos los campos obligatorios');
-            return;
-        }
-
-        const mensaje = generarMensajeWhatsApp();
-        const numeroWhatsApp = '5493513797137';
-        const urlWhatsApp = `https://wa.me/${numeroWhatsApp}?text=${encodeURIComponent(mensaje)}`;
-
-        window.open(urlWhatsApp, '_blank');
-        clearCart();
-        navigate('/');
-    };
-
-    const generarMensajeWhatsApp = () => {
-        const nombreCompleto = `${formData.nombre} ${formData.apellido}`;
-
-        let mensaje = `Hola, buen día! soy ${nombreCompleto}. Quisiera confirmar el siguiente pedido para proceder al pago:\n\n`;
-
-        mensaje += `Resumen del pedido\n`;
-        items.forEach((item, index) => {
-            if (items.length > 1) mensaje += `${index + 1}) `;
-            mensaje += `${item.nombre}`;
-            if (item.color) mensaje += ` — Color: ${item.color}`;
-            if (item.talle) mensaje += ` — Talla: ${item.talle}`;
-            mensaje += ` — Cantidad: ${item.quantity} — $${item.precio}\n`;
-        });
-
-        mensaje += `\nEnvío: A coordinar\n`;
-        mensaje += `Total a pagar: $${Math.round(totalPrice)}\n\n`;
-
-        mensaje += `Datos de contacto\n`;
-        mensaje += `• Nombre: ${nombreCompleto}\n`;
-        mensaje += `• Teléfono: ${formData.telefono}\n`;
-        mensaje += `• Email: ${formData.email}\n\n`;
-
-        mensaje += `Siguiente paso: por favor, envíenme el link de pago o el método disponible (MercadoPago / transferencia / pago en efectivo). Respondo "CONFIRMO" si todo está correcto y quiero que me envíen el link.\n\n`;
-
-        mensaje += `Muchas gracias — quedo atenta ✨`;
-
-        return mensaje;
-    };
-
-    if (items.length === 0) {
-        return (
-            <>
-                <Header />
-                <PageContainer>
-                    <EmptyCartContainer>
-                        <EmptyCartIcon>🛒</EmptyCartIcon>
-                        <EmptyCartTitle>Tu carrito está vacío</EmptyCartTitle>
-                        <EmptyCartMessage>
-                            Agrega algunos productos para proceder al checkout
-                        </EmptyCartMessage>
-                        <ContinueShoppingButton onClick={() => navigate('/')}>
-                            Ir al catálogo
-                        </ContinueShoppingButton>
-                    </EmptyCartContainer>
-                </PageContainer>
-                <Footer />
-            </>
-        );
+    if (!formData.nombre || !formData.apellido || !formData.email || !formData.telefono) {
+      alert('Por favor, completa todos los campos obligatorios');
+      return;
     }
 
+    const mensaje = generarMensajeWhatsApp();
+    const numeroWhatsApp = '5491163644401';
+    const urlWhatsApp = `https://wa.me/${numeroWhatsApp}?text=${encodeURIComponent(mensaje)}`;
+
+    window.open(urlWhatsApp, '_blank');
+    clearCart();
+    navigate('/');
+  };
+
+  const generarMensajeWhatsApp = () => {
+    const nombreCompleto = `${formData.nombre} ${formData.apellido}`;
+
+    let mensaje = `Hola, buen día! soy ${nombreCompleto}. Quisiera confirmar el siguiente pedido para proceder al pago:\n\n`;
+
+    mensaje += `Resumen del pedido\n`;
+    items.forEach((item, index) => {
+      if (items.length > 1) mensaje += `${index + 1}) `;
+      mensaje += `${item.nombre}`;
+      if (item.color) mensaje += ` — Color: ${item.color}`;
+      if (item.talle) mensaje += ` — Talla: ${item.talle}`;
+      mensaje += ` — Cantidad: ${item.quantity} — $${item.precio}\n`;
+    });
+
+    mensaje += `\nEnvío: A coordinar\n`;
+    mensaje += `Total a pagar: $${Math.round(totalPrice)}\n\n`;
+
+    mensaje += `Datos de contacto\n`;
+    mensaje += `• Nombre: ${nombreCompleto}\n`;
+    mensaje += `• Teléfono: ${formData.telefono}\n`;
+    mensaje += `• Email: ${formData.email}\n\n`;
+
+    mensaje += `Último paso, enviame el link de pago o comprobante (MercadoPago / Transferencia), así comienzo a hacer su pedido\n\n`;
+
+    mensaje += `Quedo atento.`;
+
+    return mensaje;
+  };
+
+  if (items.length === 0) {
     return (
-        <>
-            <Header />
-            <PageContainer>
-                <Breadcrumb>
-                    <BreadcrumbButton onClick={() => navigate('/')}>Catálogo</BreadcrumbButton>
-                    <BreadcrumbSeparator>
-                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                            <path d="M6 12L10 8L6 4" stroke="#BEBCBD" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                        </svg>
-                    </BreadcrumbSeparator>
-                    <BreadcrumbButton onClick={() => navigate('/carrito')}>Carrito</BreadcrumbButton>
-                    <BreadcrumbSeparator>
-                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                            <path d="M6 12L10 8L6 4" stroke="#BEBCBD" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                        </svg>
-                    </BreadcrumbSeparator>
-                    <BreadcrumbCurrent>Pagar</BreadcrumbCurrent>
-                </Breadcrumb>
-
-                <CheckoutContainer>
-                    <CheckoutForm onSubmit={handleSubmit}>
-                        <FormSection>
-                            <FormTitle>Completá tu información</FormTitle>
-
-                            <FormGroup>
-                                <Input
-                                    type="text"
-                                    id="nombre"
-                                    name="nombre"
-                                    value={formData.nombre}
-                                    onChange={handleInputChange}
-                                    placeholder="Nombre/s"
-                                    required
-                                />
-                                <Label htmlFor="nombre">Nombre*</Label>
-                            </FormGroup>
-
-                            <FormGroup>
-                                <Input
-                                    type="text"
-                                    id="apellido"
-                                    name="apellido"
-                                    value={formData.apellido}
-                                    onChange={handleInputChange}
-                                    placeholder="Apellido/s"
-                                    required
-                                />
-                                <Label htmlFor="apellido">Apellido*</Label>
-                            </FormGroup>
-
-                            <FormGroup>
-                                <Input
-                                    type="email"
-                                    id="email"
-                                    name="email"
-                                    value={formData.email}
-                                    onChange={handleInputChange}
-                                    placeholder="ejemplo@email.com"
-                                    required
-                                />
-                                <Label htmlFor="email">Email*</Label>
-                            </FormGroup>
-
-                            <FormGroup>
-                                <Input
-                                    type="tel"
-                                    id="telefono"
-                                    name="telefono"
-                                    value={formData.telefono}
-                                    onChange={handleInputChange}
-                                    placeholder="+54 9 351 12345"
-                                    required
-                                />
-                                <Label htmlFor="telefono">Número de teléfono*</Label>
-                            </FormGroup>
-                        </FormSection>
-
-                        <OrderSection>
-                            <OrderCard>
-                                <OrderTitle>Tu pedido</OrderTitle>
-
-                                <MessagePreview>
-                                    <MessageText>
-                                        Hola, buen día! soy {formData.nombre && formData.apellido ? `${formData.nombre} ${formData.apellido}` : ''}. Quisiera confirmar el siguiente pedido para proceder al pago:
-                                    </MessageText>
-
-                                    <MessageText>
-                                        <strong>Resumen del pedido</strong>
-                                        <br />
-                                        {items.map((item, index) => (
-                                            <span key={item.id}>
-                                                {items.length > 1 && `${index + 1}) `}{item.nombre}
-                                                {item.color && ` — Color: ${item.color}`}
-                                                {item.talle && ` — Talla: ${item.talle}`}
-                                                {` — Cantidad: ${item.quantity} — $${item.precio}`}
-                                                <br />
-                                            </span>
-                                        ))}
-                                    </MessageText>
-
-                                    <MessageText>
-                                        Envío: A coordinar
-                                        <br />
-                                        Total a pagar: <strong>${Math.round(totalPrice)}</strong>
-                                    </MessageText>
-
-                                    <MessageText>
-                                        <strong>Datos de contacto</strong>
-                                        <br />
-                                        • Nombre: {formData.nombre} {formData.apellido}
-                                        <br />
-                                        • Teléfono: {formData.telefono}
-                                        <br />
-                                        • Email: {formData.email}
-                                    </MessageText>
-
-                                    <MessageText>
-                                        <strong>Siguiente paso:</strong> por favor, envíenme el link de pago o el método disponible (MercadoPago / transferencia / pago en efectivo). Respondo "CONFIRMO" si todo está correcto y quiero que me envíen el link.
-                                    </MessageText>
-
-                                    <MessageText>
-                                        Muchas gracias — quedo atenta ✨
-                                    </MessageText>
-
-                                </MessagePreview>
-                            </OrderCard>
-
-                            <SendButton type="submit">
-                                Enviar
-                                <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
-                                    <path d="M1 8h14M8 1l7 7-7 7" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                                </svg>
-                            </SendButton>
-                        </OrderSection>
-                    </CheckoutForm>
-                </CheckoutContainer>
-            </PageContainer>
-            <Footer />
-        </>
+      <>
+        <Header />
+        <PageContainer>
+          <EmptyCartContainer>
+            <EmptyCartIcon>🛒</EmptyCartIcon>
+            <EmptyCartTitle>Tu carrito está vacío</EmptyCartTitle>
+            <EmptyCartMessage>
+              Agrega algunos productos para proceder al checkout
+            </EmptyCartMessage>
+            <ContinueShoppingButton onClick={() => navigate('/')}>
+              Ir al catálogo
+            </ContinueShoppingButton>
+          </EmptyCartContainer>
+        </PageContainer>
+        <Footer />
+      </>
     );
+  }
+
+  return (
+    <>
+      <Header />
+      <PageContainer>
+        <Breadcrumb>
+          <BreadcrumbButton onClick={() => navigate('/')}>Catálogo</BreadcrumbButton>
+          <BreadcrumbSeparator>
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <path d="M6 12L10 8L6 4" stroke="#BEBCBD" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </BreadcrumbSeparator>
+          <BreadcrumbButton onClick={() => navigate('/carrito')}>Carrito</BreadcrumbButton>
+          <BreadcrumbSeparator>
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <path d="M6 12L10 8L6 4" stroke="#BEBCBD" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </BreadcrumbSeparator>
+          <BreadcrumbCurrent>Pagar</BreadcrumbCurrent>
+        </Breadcrumb>
+
+        <CheckoutContainer>
+          <CheckoutForm onSubmit={handleSubmit}>
+            <FormSection>
+              <FormTitle>Completá tu información</FormTitle>
+
+              <FormGroup>
+                <Input
+                  type="text"
+                  id="nombre"
+                  name="nombre"
+                  value={formData.nombre}
+                  onChange={handleInputChange}
+                  placeholder="Nombre/s"
+                  required
+                />
+                <Label htmlFor="nombre">Nombre*</Label>
+              </FormGroup>
+
+              <FormGroup>
+                <Input
+                  type="text"
+                  id="apellido"
+                  name="apellido"
+                  value={formData.apellido}
+                  onChange={handleInputChange}
+                  placeholder="Apellido/s"
+                  required
+                />
+                <Label htmlFor="apellido">Apellido*</Label>
+              </FormGroup>
+
+              <FormGroup>
+                <Input
+                  type="email"
+                  id="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleInputChange}
+                  placeholder="ejemplo@email.com"
+                  required
+                />
+                <Label htmlFor="email">Email*</Label>
+              </FormGroup>
+
+              <FormGroup>
+                <Input
+                  type="tel"
+                  id="telefono"
+                  name="telefono"
+                  value={formData.telefono}
+                  onChange={handleInputChange}
+                  placeholder="+54 9 351 12345"
+                  required
+                />
+                <Label htmlFor="telefono">Número de teléfono*</Label>
+              </FormGroup>
+            </FormSection>
+
+            <OrderSection>
+              <OrderCard>
+                <OrderTitle>Tu pedido</OrderTitle>
+
+                <MessagePreview>
+                  <MessageText>
+                    Hola, buen día! soy {formData.nombre && formData.apellido ? `${formData.nombre} ${formData.apellido}` : ''}. Quisiera confirmar el siguiente pedido para proceder al pago:
+                  </MessageText>
+
+                  <MessageText>
+                    <strong>Resumen del pedido</strong>
+                    <br />
+                    {items.map((item, index) => (
+                      <span key={item.id}>
+                        {items.length > 1 && `${index + 1}) `}{item.nombre}
+                        {item.color && ` — Color: ${item.color}`}
+                        {item.talle && ` — Talla: ${item.talle}`}
+                        {` — Cantidad: ${item.quantity} — $${item.precio}`}
+                        <br />
+                      </span>
+                    ))}
+                  </MessageText>
+
+                  <MessageText>
+                    Envío: A coordinar
+                    <br />
+                    Total a pagar: <strong>${Math.round(totalPrice)}</strong>
+                  </MessageText>
+
+                  <MessageText>
+                    <strong>Datos de contacto</strong>
+                    <br />
+                    • Nombre: {formData.nombre} {formData.apellido}
+                    <br />
+                    • Teléfono: {formData.telefono}
+                    <br />
+                    • Email: {formData.email}
+                  </MessageText>
+
+                  <MessageText>
+                    Último paso, enviame el link de pago o comprobante (MercadoPago / Transferencia), así comienzo a hacer su pedido.
+                  </MessageText>
+
+                  <MessageText>
+                    Quedo atento.
+                  </MessageText>
+
+                </MessagePreview>
+              </OrderCard>
+
+              <SendButton type="submit">
+                Enviar
+                <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+                  <path d="M1 8h14M8 1l7 7-7 7" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              </SendButton>
+            </OrderSection>
+          </CheckoutForm>
+        </CheckoutContainer>
+      </PageContainer>
+      <Footer />
+    </>
+  );
 };
 
 export default CheckoutPage;

@@ -4,27 +4,27 @@ import './Promotions.css';
 const MOCK_PROMOTIONS = [
     {
         id: 1,
-        date: 'Del 27 al 30 de noviembre',
-        title: '6 cuotas cero interés',
-        subtitle: 'En Despegar',
-        tag: 'NX Crédito',
-        image: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?ixlib=rb-1.2.1&auto=format&fit=crop&w=1353&q=80' // Beach/Travel image
+        date: 'Válido hasta fin de mes',
+        title: '2x1 en Asado de Tira',
+        subtitle: 'Llevá el doble de carne premium',
+        tag: 'Cortes Premium',
+        image: 'https://images.unsplash.com/photo-1588168333986-5078d3ae3976?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80' // Grilled meat image
     },
     {
         id: 2,
-        date: 'Solo por hoy',
-        title: '50% OFF en Tecnología',
-        subtitle: 'En productos seleccionados',
-        tag: 'Cyber Monday',
-        image: 'https://images.unsplash.com/photo-1519389950473-47ba0277781c?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80' // Tech image
+        date: 'Todos los fines de semana',
+        title: '30% OFF en Achuras',
+        subtitle: 'Chinchulines, mollejas y más',
+        tag: 'Parrilla',
+        image: 'https://images.unsplash.com/photo-1529692236671-f1f6cf9683ba?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80' // BBQ/Grill image
     },
     {
         id: 3,
-        date: 'Todo el mes',
-        title: 'Envío Gratis',
-        subtitle: 'En compras superiores a $50.000',
-        tag: 'Envíos',
-        image: 'https://images.unsplash.com/photo-1586880244406-556ebe35f282?ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80' // Delivery/Box image
+        date: 'Martes y Jueves',
+        title: 'Milanesas Caseras',
+        subtitle: '15% de descuento en todas las variedades',
+        tag: 'Elaborados',
+        image: 'https://images.unsplash.com/photo-1432139555190-58524dae6a55?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80' // Food preparation image
     }
 ];
 
