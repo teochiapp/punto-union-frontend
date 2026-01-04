@@ -1,0 +1,248 @@
+@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@300;400;500;600;700&family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
+
+:root {
+  /* Typography */
+  --font-header: 'Josefin Sans', sans-serif;
+  --font-body: 'Space Grotesk', sans-serif;
+
+  /* Colors */
+  --color-primary: #DDA448;
+  --color-secondary: #BB342F;
+  --color-secondary-accent: #8B2E2E;
+  --color-background: #FEFCF0;
+  --color-dark-background: #1B1A18;
+  --color-background-overlay: #F4F1E6;
+
+  /* Additional variables for components */
+  --primary-color: #DDA448;
+  --secondary-color: #BB342F;
+  --bg-primary: #FEFCF0;
+  --bg-secondary: #EDE9DD;
+  --text-primary: #1B1A18;
+  --text-secondary: #5a5a5a;
+  --card-bg: #ffffff;
+
+  /* Legacy support */
+  color-scheme: light;
+  font-family: var(--font-body);
+  font-family: var(--font-body);
+  line-height: 1.5;
+  font-weight: 400;
+  background: var(--color-background);
+  background: var(--color-background);
+  color: #2c2c2c;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--color-background);
+}
+
+a {
+  color: inherit;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+  color: inherit;
+}
+
+.page {
+  background: var(--color-background) !important;
+  padding: clamp(1.5rem, 4vw, 3rem);
+  border-radius: 18px;
+  box-shadow: 0 18px 40px rgba(23, 57, 42, 0.08);
+}
+
+.page h1,
+.page h2,
+.page h3 {
+  margin: 0 0 1rem;
+  color: #17392a;
+}
+
+.home__sections {
+  margin-top: 2rem;
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+
+.home__section-card {
+  background: var(--color-background);
+  border-radius: 16px;
+  padding: 1.5rem;
+  border: 1px solid rgba(23, 57, 42, 0.08);
+}
+
+.page__header {
+  margin-bottom: 2.5rem;
+}
+
+.catalog__categories,
+.catalog__products {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.catalog__category-card,
+.catalog__product-card {
+  background: var(--color-background);
+  border-radius: 16px;
+  padding: 1.5rem;
+  border: 1px solid rgba(23, 57, 42, 0.08);
+}
+
+.catalog__product-grid {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  padding: 0;
+  margin: 0;
+}
+
+.catalog__product-name {
+  font-weight: 600;
+}
+
+.catalog__product-price {
+  display: block;
+  margin-top: 0.5rem;
+  color: #1f4d36;
+}
+
+.catalog__actions {
+  margin: 2.5rem 0 1.5rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.catalog__link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.75rem 1.75rem;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  background: #f7f5f2;
+  color: #17392a;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.btn:hover {
+  border-color: rgba(23, 57, 42, 0.2);
+}
+
+.btn--primary {
+  background: #1f4d36;
+  color: #f7f5f2;
+}
+
+.btn--primary:hover {
+  background: #17392a;
+}
+
+.page--cart .cart__list {
+  list-style: none;
+  padding: 0;
+  margin: 1.5rem 0;
+  display: grid;
+  gap: 1rem;
+}
+
+.cart__item {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 0.75rem;
+  background: #f7f5f2;
+  border-radius: 14px;
+  padding: 1rem;
+}
+
+.cart__total {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.5rem;
+  border-radius: 14px;
+  background: #1f4d36;
+  color: #f7f5f2;
+}
+
+.page--checkout .checkout__steps {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin: 1.5rem 0;
+}
+
+.checkout__step {
+  padding: 0.65rem 1.5rem;
+  border-radius: 999px;
+  background: #f7f5f2;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.checkout__step.is-active {
+  background: #17392a;
+  color: #f7f5f2;
+}
+
+.checkout__form {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.checkout__section {
+  display: grid;
+  gap: 1rem;
+}
+
+.checkout__section label {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.checkout__section input,
+.checkout__section select {
+  padding: 0.65rem 0.85rem;
+  border-radius: 12px;
+  border: 1px solid rgba(23, 57, 42, 0.2);
+  background: #fff;
+}
+
+.page--about ul {
+  list-style: none;
+  padding: 0;
+  margin: 1.5rem 0 0;
+  display: grid;
+  gap: 1rem;
+}
+
+.about__milestones li,
+.about__values li {
+  background: #f7f5f2;
+  border-radius: 14px;
+  padding: 1rem 1.25rem;
+  border: 1px solid rgba(23, 57, 42, 0.08);
+}
