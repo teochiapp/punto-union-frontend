@@ -25,10 +25,8 @@
   /* Legacy support */
   color-scheme: light;
   font-family: var(--font-body);
-  font-family: var(--font-body);
   line-height: 1.5;
   font-weight: 400;
-  background: var(--color-background);
   background: var(--color-background);
   color: #2c2c2c;
 }

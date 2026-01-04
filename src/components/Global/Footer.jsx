@@ -1,4 +1,4 @@
-
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 
@@ -14,10 +14,12 @@ const FooterContainer = styled.footer`
   
   @media (max-width: 900px) {
     grid-template-columns: 1fr;
+    display: flex;
+    flex-direction: column-reverse;
+    align-items: center;
     text-align: center;
     padding: 3rem 1.5rem;
-    gap: 60px;
-
+    gap: 3rem;
   }
 `;
 
@@ -29,6 +31,7 @@ const ColumnLeft = styled.div`
 
   @media (max-width: 900px) {
     align-items: center;
+    width: 100%;
   }
 `;
 
@@ -38,6 +41,10 @@ const ColumnCenter = styled.div`
   align-items: center;
   justify-content: center;
   gap: 1.5rem;
+  
+  @media (max-width: 900px) {
+    margin-bottom: 1rem;
+  }
 `;
 
 const ColumnRight = styled.div`
@@ -48,7 +55,9 @@ const ColumnRight = styled.div`
 
   @media (max-width: 900px) {
     align-items: center;
-    gap: 1.2rem;
+    gap: 1.5rem;
+    margin-bottom: 1rem;
+    width: 100%;
   }
 `;
 
@@ -91,7 +100,7 @@ const AddressGrid = styled.div`
   }
 `;
 
-const FooterLink = styled.a`
+const FooterLink = styled(Link)`
   color: #fff;
   text-decoration: none;
   font-family: 'Josefin Sans', sans-serif;
@@ -139,26 +148,6 @@ const Socials = styled.div`
   }
 `;
 
-const AccessibilityIcon = styled.div`
-  position: fixed;
-  bottom: 2rem;
-  left: 2rem;
-  width: 40px;
-  height: 40px;
-  background: #000;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #fff;
-  cursor: pointer;
-  z-index: 50;
-  
-  @media (max-width: 900px) {
-    display: none; /* Often hidden on mobile or adjusted */
-  }
-`;
-
 const Footer = () => {
   return (
     <>
@@ -174,7 +163,7 @@ const Footer = () => {
             </AddressBlock>
 
             <AddressBlock>
-              <strong>Villa 31</strong>
+              <strong>Barrio 31</strong>
               <span>(516) 283-2349</span>
             </AddressBlock>
 
@@ -194,7 +183,6 @@ const Footer = () => {
         <ColumnCenter>
           <LogoCircle>
             Punto Union Market
-
           </LogoCircle>
           <Socials>
             <span>instagram</span> — <span>Whatsapp</span> — <span>email</span>
@@ -203,11 +191,11 @@ const Footer = () => {
 
         {/* Right Column: Navigation */}
         <ColumnRight>
-          <FooterLink href="#nosotros">Nosotros</FooterLink>
-          <FooterLink href="#reservas">Reservas</FooterLink>
-          <FooterLink href="#sucursales">Sucursales</FooterLink>
-          <FooterLink href="#contacto">Contacto</FooterLink>
-          <FooterLink href="#promociones">Promociones</FooterLink>
+          <FooterLink to="/nosotros">Nosotros</FooterLink>
+          <FooterLink to="/reservas">Reservas</FooterLink>
+          <FooterLink to="/sucursales">Sucursales</FooterLink>
+          <FooterLink to="/contacto">Contacto</FooterLink>
+          <FooterLink to="/catalogo/all">Catálogo</FooterLink>
         </ColumnRight>
       </FooterContainer>
     </>
