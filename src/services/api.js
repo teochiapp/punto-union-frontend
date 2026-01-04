@@ -86,4 +86,19 @@ export const fetchAnimales = async () => {
   }
 };
 
+// Fetch all promotions
+export const fetchPromociones = async () => {
+  try {
+    const response = await api.get('/promociones', {
+      params: {
+        'populate': '*',
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching promociones:', error);
+    throw error;
+  }
+};
+
 export default api;

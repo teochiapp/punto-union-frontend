@@ -54,7 +54,7 @@
   font-family: var(--font-header);
   font-size: 2.5rem;
   font-weight: 700;
-  color: var(--text-primary);
+  color: var(--secondary-color);
   margin: 0 0 1rem;
   line-height: 1.1;
 }
@@ -63,8 +63,16 @@
   font-family: var(--font-body);
   font-size: 1.1rem;
   color: var(--text-primary);
-  margin-bottom: 2rem;
+  margin-bottom: 1rem;
   font-weight: 500;
+}
+
+.promotion-description {
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  margin-bottom: 1.5rem;
+  line-height: 1.6;
 }
 
 .promotion-tag {
@@ -169,3 +177,41 @@
   width: 100%;
   height: 100%;
 }
+
+/* Mobile Optimizations */
+@media (max-width: 767px) {
+  .promotion-card {
+    height: 550px; /* Increased height to accommodate larger image */
+  }
+
+  .promotion-content {
+    flex: 0.8; /* Reduced content space */
+    padding: 1.5rem; /* Reduced padding */
+  }
+
+  .promotion-title {
+    font-size: 1.8rem; /* Reduced from 2.5rem */
+    margin-bottom: 0.75rem;
+  }
+
+  .promotion-subtitle {
+    font-size: 0.95rem; /* Reduced from 1.1rem */
+    margin-bottom: 0.75rem;
+  }
+
+  .promotion-description {
+    font-size: 0.85rem; /* Reduced from 0.95rem */
+    margin-bottom: 1rem;
+    line-height: 1.5;
+  }
+
+  .promotion-image-container {
+    flex: 1.5; /* Increased from 1.2 to give more space to image */
+  }
+
+  .promotion-tag {
+    font-size: 0.8rem;
+    padding: 0.4rem 0.8rem;
+  }
+}
+

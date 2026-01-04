@@ -11,283 +11,6 @@ import { useCarrito } from '../../context/CarritoContext';
 import WhatsAppButton from '../../components/WhatsAppButton/WhatsAppButton';
 import { fetchCategorias, fetchProductosPorCategoria } from '../../services/api';
 
-// --- Styled Components ---
-
-const PageWrapper = styled.div`
-  background-color: #FEFCF0; /* Cream background like the image */
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-`;
-
-const MainContent = styled.main`
-  flex: 1;
-  padding-top: 100px; /* Space for fixed header */
-`;
-
-const HeroSection = styled(motion.section)`
-  text-align: left;
-  padding: 0rem 0 1.5rem 0;
-  max-width: 1200px;
-  margin: 0;
-`;
-
-const BackButton = styled.button`
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.5rem;
-  background: transparent;
-  border: none;
-  color: #666;
-  font-family: 'Josefin Sans', sans-serif;
-  font-size: 1rem;
-  cursor: pointer;
-  transition: color 0.3s ease;
-  margin-top: 1rem; /* Reduced margin */
-
-  &:hover {
-    color: #8B2E2E; /* Reddish brown hover */
-  }
-`;
-
-const CategoryTitle = styled(motion.h1)`
-  font-family: 'Josefin Sans', sans-serif;
-  font-size: 2.5rem; 
-  font-weight: 700;
-  color: #8B2E2E;
-  margin-bottom: 0.75rem;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  line-height: 1.1;
-
-  @media (max-width: 768px) {
-    font-size: 2rem;
-  }
-`;
-
-const CategoryDescription = styled(motion.p)`
-  font-family: 'Space Grotesk', sans-serif;
-  font-size: 1rem;
-  color: #4A4A4A;
-  line-height: 1.6;
-  max-width: 600px;
-  margin: 0;
-`;
-
-const GridContainer = styled.div`
-  max-width: 1200px; /* Constrained width like the card layout in image */
-  margin: 0 auto;
-  padding: 0 2rem 4rem;
-
-  @media (max-width: 768px) {
-    padding: 0 1rem 3rem;
-  }
-`;
-
-const ProductsGrid = styled(motion.div)`
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 2rem;
-  
-  @media (min-width: 1024px) {
-     /* Try to match the 2-column feel if there are few items, or standard grid */
-     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-     gap: 3rem;
-  }
-`;
-
-const Card = styled(motion.article)`
-  background: white;
-  border-radius: 20px; /* More rounded as per image */
-  overflow: hidden;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  position: relative;
-  
-  &:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-  }
-`;
-
-const ImageContainer = styled.div`
-  width: 100%;
-  height: 240px; /* Fixed height for consistent look */
-  position: relative;
-  background: #f4f4f4;
-  overflow: hidden;
-  margin: 0.75rem 0.75rem 0 0.75rem; /* Margins to show rounded top separate from card edge */
-  border-radius: 16px;
-  width: calc(100% - 1.5rem);
-`;
-
-const ProductImage = styled.img`
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: transform 0.6s ease;
-
-  ${Card}:hover & {
-    transform: scale(1.1);
-  }
-`;
-
-const NoImage = styled.div`
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #ccc;
-  font-size: 3rem;
-  background-color: #eee;
-`;
-
-const CardContent = styled.div`
-  padding: 1.5rem;
-  display: flex;
-  flex-direction: column;
-  flex-grow: 1;
-`;
-
-const ProductName = styled.h3`
-  font-family: 'Josefin Sans', sans-serif; /* Should ideally be Serif */
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: #8B2E2E; /* Reddish product title */
-  margin-bottom: 0.5rem;
-  line-height: 1.2;
-`;
-
-const ProductPrice = styled.div`
-  font-family: 'Josefin Sans', sans-serif;
-  font-size: 1.75rem;
-  font-weight: 700;
-  color: #8B2E2E; /* Reddish price */
-  
-  span {
-    font-size: 1rem;
-    font-weight: 600;
-    color: #8B2E2E;
-    opacity: 0.8;
-  }
-`;
-
-const ProductDescShort = styled.p`
-  font-family: 'Space Grotesk', sans-serif;
-  font-size: 1rem;
-  color: #666;
-  margin-bottom: 1rem;
-  line-height: 1.5;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  flex-grow: 1;
-`;
-
-const PriceRow = styled.div`
-  display: flex;
-  align-items: baseline;
-  margin-bottom: 1.5rem;
-`;
-
-const QuantitySelector = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 1rem;
-  margin-bottom: 1rem;
-  background: #fdf7e9;
-  padding: 0.5rem;
-  border-radius: 8px;
-`;
-
-const QuantityBtn = styled.button`
-  width: 32px;
-  height: 32px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: white;
-  border: 1px solid #8B2E2E;
-  color: #8B2E2E;
-  border-radius: 50%;
-  cursor: pointer;
-  font-weight: bold;
-  font-size: 1.2rem;
-  transition: all 0.2s;
-
-  &:hover:not(:disabled) {
-    background: #8B2E2E;
-    color: white;
-  }
-
-  &:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-    border-color: #ccc;
-    color: #ccc;
-  }
-`;
-
-const QuantityDisplay = styled.span`
-  font-family: 'Josefin Sans', sans-serif;
-  font-size: 1.1rem;
-  font-weight: 600;
-  color: #1B1A18;
-  min-width: 60px;
-  text-align: center;
-`;
-
-const AddToCartButton = styled.button`
-  width: 100%;
-  padding: 0.875rem;
-  background-color: transparent; /* Changed to match potential ghost style or keep simple */
-  color: #8B2E2E;
-  border: 2px solid #8B2E2E;
-  border-radius: 12px;
-  font-family: 'Josefin Sans', sans-serif;
-  font-weight: 700;
-  text-transform: uppercase;
-  font-size: 0.9rem;
-  letter-spacing: 1px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  transition: all 0.3s ease;
-
-  &:hover {
-    background-color: #8B2E2E;
-    color: white;
-  }
-`;
-
-
-
-const LoadingContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  min-height: 50vh;
-  color: #8B2E2E;
-  gap: 1rem;
-`;
-
-const EmptyState = styled.div`
-  text-align: center;
-  padding: 4rem;
-  color: #666;
-  font-family: 'Josefin Sans', sans-serif;
-  font-size: 1.2rem;
-`;
 
 // --- Animations ---
 
@@ -588,3 +311,282 @@ const Catalog = () => {
 };
 
 export default Catalog;
+
+
+// --- Styled Components ---
+
+const PageWrapper = styled.div`
+  background-color: #FEFCF0; /* Cream background like the image */
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+`;
+
+const MainContent = styled.main`
+  flex: 1;
+  padding-top: 100px; /* Space for fixed header */
+`;
+
+const HeroSection = styled(motion.section)`
+  text-align: left;
+  padding: 0rem 0 1.5rem 0;
+  max-width: 1200px;
+  margin: 0;
+`;
+
+const BackButton = styled.button`
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem;
+  background: transparent;
+  border: none;
+  color: #666;
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: color 0.3s ease;
+  margin-top: 1rem; /* Reduced margin */
+
+  &:hover {
+    color: #8B2E2E; /* Reddish brown hover */
+  }
+`;
+
+const CategoryTitle = styled(motion.h1)`
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 2.5rem; 
+  font-weight: 700;
+  color: #8B2E2E;
+  margin-bottom: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  line-height: 1.1;
+
+  @media (max-width: 768px) {
+    font-size: 2rem;
+  }
+`;
+
+const CategoryDescription = styled(motion.p)`
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 1rem;
+  color: #4A4A4A;
+  line-height: 1.6;
+  max-width: 600px;
+  margin: 0;
+`;
+
+const GridContainer = styled.div`
+  max-width: 1200px; /* Constrained width like the card layout in image */
+  margin: 0 auto;
+  padding: 0 2rem 4rem;
+
+  @media (max-width: 768px) {
+    padding: 0 1rem 3rem;
+  }
+`;
+
+const ProductsGrid = styled(motion.div)`
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 2rem;
+  
+  @media (min-width: 1024px) {
+     /* Try to match the 2-column feel if there are few items, or standard grid */
+     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+     gap: 3rem;
+  }
+`;
+
+const Card = styled(motion.article)`
+  background: white;
+  border-radius: 20px; /* More rounded as per image */
+  overflow: hidden;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  
+  &:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+  }
+`;
+
+const ImageContainer = styled.div`
+  width: 100%;
+  height: 240px; /* Fixed height for consistent look */
+  position: relative;
+  background: #f4f4f4;
+  overflow: hidden;
+  margin: 0.75rem 0.75rem 0 0.75rem; /* Margins to show rounded top separate from card edge */
+  border-radius: 16px;
+  width: calc(100% - 1.5rem);
+`;
+
+const ProductImage = styled.img`
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s ease;
+
+  ${Card}:hover & {
+    transform: scale(1.1);
+  }
+`;
+
+const NoImage = styled.div`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ccc;
+  font-size: 3rem;
+  background-color: #eee;
+`;
+
+const CardContent = styled.div`
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+`;
+
+const ProductName = styled.h3`
+  font-family: 'Josefin Sans', sans-serif; /* Should ideally be Serif */
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #8B2E2E; /* Reddish product title */
+  margin-bottom: 0.5rem;
+  line-height: 1.2;
+`;
+
+const ProductPrice = styled.div`
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #8B2E2E; /* Reddish price */
+  
+  span {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #8B2E2E;
+    opacity: 0.8;
+  }
+`;
+
+const ProductDescShort = styled.p`
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 1rem;
+  color: #666;
+  margin-bottom: 1rem;
+  line-height: 1.5;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  flex-grow: 1;
+`;
+
+const PriceRow = styled.div`
+  display: flex;
+  align-items: baseline;
+  margin-bottom: 1.5rem;
+`;
+
+const QuantitySelector = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  background: #fdf7e9;
+  padding: 0.5rem;
+  border-radius: 8px;
+`;
+
+const QuantityBtn = styled.button`
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: white;
+  border: 1px solid #8B2E2E;
+  color: #8B2E2E;
+  border-radius: 50%;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 1.2rem;
+  transition: all 0.2s;
+
+  &:hover:not(:disabled) {
+    background: #8B2E2E;
+    color: white;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    border-color: #ccc;
+    color: #ccc;
+  }
+`;
+
+const QuantityDisplay = styled.span`
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #1B1A18;
+  min-width: 60px;
+  text-align: center;
+`;
+
+const AddToCartButton = styled.button`
+  width: 100%;
+  padding: 0.875rem;
+  background-color: transparent; /* Changed to match potential ghost style or keep simple */
+  color: #8B2E2E;
+  border: 2px solid #8B2E2E;
+  border-radius: 12px;
+  font-family: 'Josefin Sans', sans-serif;
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 0.9rem;
+  letter-spacing: 1px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  transition: all 0.3s ease;
+
+  &:hover {
+    background-color: #8B2E2E;
+    color: white;
+  }
+`;
+
+
+
+const LoadingContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 50vh;
+  color: #8B2E2E;
+  gap: 1rem;
+`;
+
+const EmptyState = styled.div`
+  text-align: center;
+  padding: 4rem;
+  color: #666;
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 1.2rem;
+`;

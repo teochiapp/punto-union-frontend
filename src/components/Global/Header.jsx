@@ -1,8 +1,86 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { User, ShoppingCart, Menu, X } from 'lucide-react';
+import { ShoppingCart, Menu, X } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useCarrito } from '../../context/CarritoContext';
+
+const Header = ({ transparent = false }) => {
+  const navigate = useNavigate();
+  const { totalItems } = useCarrito();
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  const toggleMenu = () => setIsMobileMenuOpen(!isMobileMenuOpen);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 50) {
+        setIsScrolled(true);
+      } else {
+        setIsScrolled(false);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  return (
+    <HeaderContainer $isScrolled={isScrolled} $transparent={transparent}>
+      {/* Mobile Menu Button - Left on Mobile */}
+      <MobileMenuBtn onClick={toggleMenu} aria-label="Toggle menu">
+        <Menu size={24} />
+      </MobileMenuBtn>
+
+      {/* Center Group: Nav Left + Logo + Nav Right */}
+      <CenterGroup>
+        <Nav>
+          <NavLink onClick={() => navigate('/nosotros')}>Nosotros</NavLink>
+          <NavLink onClick={() => navigate('/catalogo')}>Catálogo</NavLink>
+        </Nav>
+
+        <Logo onClick={() => navigate('/')}>Punto Union <span>Market</span></Logo>
+
+        <Nav>
+          <NavLink onClick={() => navigate('/sucursales')}>Sucursales</NavLink>
+          <NavLink onClick={() => navigate('/contacto')}>Contacto</NavLink>
+        </Nav>
+      </CenterGroup>
+
+      <Actions>
+        <ActionButton onClick={() => navigate('/carrito')} aria-label="Shopping cart">
+          <ShoppingCart size={20} strokeWidth={1.5} />
+          {totalItems > 0 && (
+            <CartBadge $isScrolled={isScrolled} $transparent={transparent}>
+              {totalItems}
+            </CartBadge>
+          )}
+        </ActionButton>
+      </Actions>
+
+      {/* Mobile Navigation Overlay */}
+      <MobileNav $isOpen={isMobileMenuOpen}>
+        <MobileMenuBtn
+          onClick={toggleMenu}
+          style={{ position: 'absolute', top: '2rem', right: '2rem', color: '#fff' }}
+        >
+          <X size={32} />
+        </MobileMenuBtn>
+
+        {/* Mobile Logo copy is optional but good for branding */}
+        <Logo onClick={() => { navigate('/'); toggleMenu(); }} style={{ display: 'flex', color: '#fff' }}>Punto Union <span>Market</span></Logo>
+
+        <MobileLink onClick={() => { navigate('/nosotros'); toggleMenu(); }}>Nosotros</MobileLink>
+        <MobileLink onClick={() => { navigate('/reservas'); toggleMenu(); }}>Reservas</MobileLink>
+        <MobileLink onClick={() => { navigate('/sucursales'); toggleMenu(); }}>Sucursales</MobileLink>
+        <MobileLink onClick={() => { navigate('/contacto'); toggleMenu(); }}>Contacto</MobileLink>
+      </MobileNav>
+    </HeaderContainer>
+  );
+};
+
+export default Header;
+
 
 const HeaderContainer = styled.header`
   position: fixed;
@@ -200,83 +278,3 @@ const MobileLink = styled(NavLink)`
   font-size: 1.5rem;
   color: #fff; /* Force white in mobile menu */
 `;
-
-const Header = ({ transparent = false }) => {
-  const navigate = useNavigate();
-  const { totalItems } = useCarrito();
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [isScrolled, setIsScrolled] = useState(false);
-
-  const toggleMenu = () => setIsMobileMenuOpen(!isMobileMenuOpen);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      if (window.scrollY > 50) {
-        setIsScrolled(true);
-      } else {
-        setIsScrolled(false);
-      }
-    };
-
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
-  return (
-    <HeaderContainer $isScrolled={isScrolled} $transparent={transparent}>
-      {/* Mobile Menu Button - Left on Mobile */}
-      <MobileMenuBtn onClick={toggleMenu} aria-label="Toggle menu">
-        <Menu size={24} />
-      </MobileMenuBtn>
-
-      {/* Center Group: Nav Left + Logo + Nav Right */}
-      <CenterGroup>
-        <Nav>
-          <NavLink onClick={() => navigate('/nosotros')}>Nosotros</NavLink>
-          <NavLink onClick={() => navigate('/reservas')}>Reservas</NavLink>
-        </Nav>
-
-        <Logo onClick={() => navigate('/')}>Punto Union <span>Market</span></Logo>
-
-        <Nav>
-          <NavLink onClick={() => navigate('/sucursales')}>Sucursales</NavLink>
-          <NavLink onClick={() => navigate('/contacto')}>Contacto</NavLink>
-        </Nav>
-      </CenterGroup>
-
-      <Actions>
-        <ActionButton aria-label="User account">
-          <User size={20} strokeWidth={1.5} />
-        </ActionButton>
-        <ActionButton onClick={() => navigate('/carrito')} aria-label="Shopping cart">
-          <ShoppingCart size={20} strokeWidth={1.5} />
-          {totalItems > 0 && (
-            <CartBadge $isScrolled={isScrolled} $transparent={transparent}>
-              {totalItems}
-            </CartBadge>
-          )}
-        </ActionButton>
-      </Actions>
-
-      {/* Mobile Navigation Overlay */}
-      <MobileNav $isOpen={isMobileMenuOpen}>
-        <MobileMenuBtn
-          onClick={toggleMenu}
-          style={{ position: 'absolute', top: '2rem', right: '2rem', color: '#fff' }}
-        >
-          <X size={32} />
-        </MobileMenuBtn>
-
-        {/* Mobile Logo copy is optional but good for branding */}
-        <Logo onClick={() => { navigate('/'); toggleMenu(); }} style={{ display: 'flex', color: '#fff' }}>Punto Union <span>Market</span></Logo>
-
-        <MobileLink onClick={() => { navigate('/nosotros'); toggleMenu(); }}>Nosotros</MobileLink>
-        <MobileLink onClick={() => { navigate('/reservas'); toggleMenu(); }}>Reservas</MobileLink>
-        <MobileLink onClick={() => { navigate('/sucursales'); toggleMenu(); }}>Sucursales</MobileLink>
-        <MobileLink onClick={() => { navigate('/contacto'); toggleMenu(); }}>Contacto</MobileLink>
-      </MobileNav>
-    </HeaderContainer>
-  );
-};
-
-export default Header;

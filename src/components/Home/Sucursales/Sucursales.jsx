@@ -1,5 +1,61 @@
 import styled from 'styled-components';
 
+// Component
+const Sucursales = () => {
+  const branches = [
+    {
+      id: 1,
+      year: '2020',
+      title: 'BELGRANO',
+      description: 'James Churchill opens Churchill\'s Butcher Shop at 132',
+      image: '/sucursales/belgrano.jpg'
+    },
+    {
+      id: 2,
+      year: '2022',
+      title: 'RETIRO',
+      description: 'Jack Wallace, an employee, purchases the shop for £2,800',
+      image: '/sucursales/retiro.jpeg'
+    },
+    {
+      id: 3,
+      year: '2024',
+      title: 'EZEIZA',
+      description: 'Gary Stokes, Jack\'s nephew, becomes the shop\'s third owner',
+      image: '/sucursales/ezeiza.jpg'
+    },
+    {
+      id: 4,
+      year: '2025',
+      title: 'RAMOS MEJÍA',
+      description: 'Gary Stokes, Jack\'s nephew, becomes the shop\'s third owner',
+      image: '/sucursales/ramos-mejia.jpg'
+    }
+  ];
+
+  return (
+    <SucursalesSection>
+      <SucursalesContainer>
+        <SucursalesGrid>
+          {branches.map((branch) => (
+            <BranchCard key={branch.id}>
+              <BranchBackground $image={branch.image} />
+              <BranchOverlay />
+              <BranchContent>
+                <BranchYear>{branch.year}</BranchYear>
+                <BranchTitle>{branch.title}</BranchTitle>
+                <BranchDescription>{branch.description}</BranchDescription>
+              </BranchContent>
+            </BranchCard>
+          ))}
+        </SucursalesGrid>
+      </SucursalesContainer>
+    </SucursalesSection>
+  );
+};
+
+export default Sucursales;
+
 // Styled Components
 const SucursalesSection = styled.section`
   padding: 4rem 0;
@@ -146,59 +202,3 @@ const BranchDescription = styled.p`
     font-size: 0.85rem;
   }
 `;
-
-// Component
-const Sucursales = () => {
-  const branches = [
-    {
-      id: 1,
-      year: '2020',
-      title: 'BELGRANO',
-      description: 'James Churchill opens Churchill\'s Butcher Shop at 132',
-      image: '/sucursales/belgrano.jpg'
-    },
-    {
-      id: 2,
-      year: '2022',
-      title: 'RETIRO',
-      description: 'Jack Wallace, an employee, purchases the shop for £2,800',
-      image: '/sucursales/retiro.jpeg'
-    },
-    {
-      id: 3,
-      year: '2024',
-      title: 'EZEIZA',
-      description: 'Gary Stokes, Jack\'s nephew, becomes the shop\'s third owner',
-      image: '/sucursales/ezeiza.jpg'
-    },
-    {
-      id: 4,
-      year: '2025',
-      title: 'RAMOS MEJÍA',
-      description: 'Gary Stokes, Jack\'s nephew, becomes the shop\'s third owner',
-      image: '/sucursales/ramos-mejia.jpg'
-    }
-  ];
-
-  return (
-    <SucursalesSection>
-      <SucursalesContainer>
-        <SucursalesGrid>
-          {branches.map((branch) => (
-            <BranchCard key={branch.id}>
-              <BranchBackground $image={branch.image} />
-              <BranchOverlay />
-              <BranchContent>
-                <BranchYear>{branch.year}</BranchYear>
-                <BranchTitle>{branch.title}</BranchTitle>
-                <BranchDescription>{branch.description}</BranchDescription>
-              </BranchContent>
-            </BranchCard>
-          ))}
-        </SucursalesGrid>
-      </SucursalesContainer>
-    </SucursalesSection>
-  );
-};
-
-export default Sucursales;

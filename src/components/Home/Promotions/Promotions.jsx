@@ -1,74 +1,144 @@
 import React, { useState, useEffect } from 'react';
+import { fetchPromociones } from '../../../services/api';
 import './Promotions.css';
 
-const MOCK_PROMOTIONS = [
-    {
-        id: 1,
-        date: 'Válido hasta fin de mes',
-        title: '2x1 en Asado de Tira',
-        subtitle: 'Llevá el doble de carne premium',
-        tag: 'Cortes Premium',
-        image: 'https://images.unsplash.com/photo-1588168333986-5078d3ae3976?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80' // Grilled meat image
-    },
-    {
-        id: 2,
-        date: 'Todos los fines de semana',
-        title: '30% OFF en Achuras',
-        subtitle: 'Chinchulines, mollejas y más',
-        tag: 'Parrilla',
-        image: 'https://images.unsplash.com/photo-1529692236671-f1f6cf9683ba?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80' // BBQ/Grill image
-    },
-    {
-        id: 3,
-        date: 'Martes y Jueves',
-        title: 'Milanesas Caseras',
-        subtitle: '15% de descuento en todas las variedades',
-        tag: 'Elaborados',
-        image: 'https://images.unsplash.com/photo-1432139555190-58524dae6a55?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80' // Food preparation image
-    }
-];
+// Helper function to extract text from Strapi Rich Text Blocks
+const extractTextFromBlocks = (blocks) => {
+    if (!blocks || !Array.isArray(blocks)) return '';
+
+    return blocks
+        .map(block => {
+            if (block.type === 'paragraph' && block.children) {
+                return block.children
+                    .map(child => child.text || '')
+                    .join('');
+            }
+            return '';
+        })
+        .filter(text => text.length > 0)
+        .join(' ');
+};
 
 const Promotions = () => {
     const [currentIndex, setCurrentIndex] = useState(0);
     const [isAnimating, setIsAnimating] = useState(false);
+    const [promociones, setPromociones] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
 
+    // Fetch promotions from Strapi
     useEffect(() => {
+        const loadPromociones = async () => {
+            try {
+                setLoading(true);
+                const response = await fetchPromociones();
+
+                // Map Strapi data to component format
+                const mappedPromociones = response.data.map((promo) => ({
+                    id: promo.id,
+                    title: promo.Titulo,
+                    subtitle: promo.Subtitulo,
+                    description: extractTextFromBlocks(promo.Descripcion),
+                    image: promo.Portada?.url
+                        ? `${process.env.REACT_APP_API_URL.replace('/api', '')}${promo.Portada.url}`
+                        : 'https://images.unsplash.com/photo-1588168333986-5078d3ae3976?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80'
+                }));
+
+                setPromociones(mappedPromociones);
+                setError(null);
+            } catch (err) {
+                console.error('Error loading promociones:', err);
+                setError('No se pudieron cargar las promociones');
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        loadPromociones();
+    }, []);
+
+    // Auto-slide effect
+    useEffect(() => {
+        if (promociones.length === 0) return;
+
         const timer = setInterval(() => {
             handleNext();
         }, 5000); // Auto slide every 5 seconds
 
         return () => clearInterval(timer);
-    }, [currentIndex]);
+    }, [currentIndex, promociones.length]);
 
     const handleNext = () => {
-        if (isAnimating) return;
+        if (isAnimating || promociones.length === 0) return;
         setIsAnimating(true);
-        setCurrentIndex((prev) => (prev + 1) % MOCK_PROMOTIONS.length);
+        setCurrentIndex((prev) => (prev + 1) % promociones.length);
         setTimeout(() => setIsAnimating(false), 500);
     };
 
     const handlePrev = () => {
-        if (isAnimating) return;
+        if (isAnimating || promociones.length === 0) return;
         setIsAnimating(true);
-        setCurrentIndex((prev) => (prev - 1 + MOCK_PROMOTIONS.length) % MOCK_PROMOTIONS.length);
+        setCurrentIndex((prev) => (prev - 1 + promociones.length) % promociones.length);
         setTimeout(() => setIsAnimating(false), 500);
     };
 
-    const currentPromo = MOCK_PROMOTIONS[currentIndex];
+    // Loading state
+    if (loading) {
+        return (
+            <div className="promotions-section">
+                <div className="promotions-container">
+                    <div className="promotion-card">
+                        <p style={{ textAlign: 'center', padding: '2rem', color: 'var(--color-text-secondary)' }}>
+                            Cargando promociones...
+                        </p>
+                    </div>
+                </div>
+            </div>
+        );
+    }
+
+    // Error state
+    if (error) {
+        return (
+            <div className="promotions-section">
+                <div className="promotions-container">
+                    <div className="promotion-card">
+                        <p style={{ textAlign: 'center', padding: '2rem', color: 'var(--color-error, #ff4444)' }}>
+                            {error}
+                        </p>
+                    </div>
+                </div>
+            </div>
+        );
+    }
+
+    // Empty state
+    if (promociones.length === 0) {
+        return (
+            <div className="promotions-section">
+                <div className="promotions-container">
+                    <div className="promotion-card">
+                        <p style={{ textAlign: 'center', padding: '2rem', color: 'var(--color-text-secondary)' }}>
+                            No hay promociones disponibles en este momento.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        );
+    }
+
+    const currentPromo = promociones[currentIndex];
 
     return (
         <div className="promotions-section">
             <div className="promotions-container">
                 <div className="promotion-card">
                     <div className="promotion-content">
-                        <span className="promotion-date">{currentPromo.date}</span>
                         <h2 className="promotion-title">{currentPromo.title}</h2>
                         <p className="promotion-subtitle">{currentPromo.subtitle}</p>
-
-                        <div className="promotion-tag">
-                            <span className="tag-icon">NX</span>
-                            {currentPromo.tag}
-                        </div>
+                        {currentPromo.description && (
+                            <p className="promotion-description">{currentPromo.description}</p>
+                        )}
                     </div>
 
                     <div className="promotion-image-container">
@@ -87,12 +157,14 @@ const Promotions = () => {
                 </button>
 
                 <div className="pagination-dots">
-                    {MOCK_PROMOTIONS.map((_, index) => (
+                    {promociones.map((_, index) => (
                         <button
                             key={index}
                             className={`dot ${index === currentIndex ? 'active' : ''}`}
                             onClick={() => {
-                                setCurrentIndex(index);
+                                if (!isAnimating) {
+                                    setCurrentIndex(index);
+                                }
                             }}
                             aria-label={`Go to slide ${index + 1}`}
                         />
