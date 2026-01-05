@@ -80,6 +80,7 @@ const Title = styled.h2`
   font-weight: 700;
   font-family: var(--font-header);
   margin-bottom: 3rem;
+  margin-top: 3rem;
   color: var(--color-secondary);
   text-transform: uppercase;
   letter-spacing: 2px;

@@ -1,22 +1,26 @@
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import { motion } from 'framer-motion';
 import { IconBrandWhatsapp } from '@tabler/icons-react';
 import { MapPin, Phone, Clock } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import sucursalesHero from '../../assets/images/contact_hero.png';
+
+const fadeIn = keyframes`
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+`;
 
 const SucursalesView = ({ sucursales }) => {
+  const navigate = useNavigate();
+
   return (
     <PageSection>
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6 }}
-      >
-        <PageTitle>Nuestras Sucursales</PageTitle>
-        <PageDescription>
-          Visitá nuestras sucursales para conocer todos nuestros productos frescos y de calidad.
-          Te esperamos con la mejor atención.
-        </PageDescription>
-      </motion.div>
+      <HeroSection>
+        <HeroContent>
+          <h1>SUCURSALES</h1>
+          <p>Visitá nuestras sucursales para conocer todos nuestros productos frescos y de calidad. Te esperamos con la mejor atención.</p>
+        </HeroContent>
+      </HeroSection>
 
       <SucursalesList>
         {sucursales.map((sucursal, index) => (
@@ -90,38 +94,58 @@ const SucursalesView = ({ sucursales }) => {
 const PageSection = styled.section`
   width: 100%;
   margin: 0;
-  padding: 8rem 0rem 4rem 0;
+  padding: 0;
   min-height: 100vh;
+  background-color: var(--color-background);
+`;
 
-  @media (max-width: 768px) {
-    padding: 4rem 0rem 2rem 0;
+const HeroSection = styled.div`
+  height: 60vh;
+  min-height: 400px;
+  background-image: url(${sucursalesHero});
+  background-size: cover;
+  background-position: center;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: #fff;
+  text-align: center;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.4);
   }
 `;
 
-const PageTitle = styled.h1`
-  font-family: var(--font-header);
-  font-size: 2.6rem;
-  font-weight: 700;
-  color: var(--primary-color);
-  text-shadow: 0 2x 2px rgba(0, 0, 0, 0.3); 
-  text-transform: uppercase;
-  margin-bottom: 1rem;
-  text-align: center;
 
+const HeroContent = styled.div`
+  position: relative;
+  z-index: 2;
+  animation: ${fadeIn} 1s ease-out;
+  padding: 0 1rem;
 
-`;
+  h1 {
+    font-family: var(--font-header);
+    font-size: clamp(3rem, 5vw, 5rem);
+    margin: 0;
+    letter-spacing: 5px;
+    font-weight: 700;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+  }
 
-const PageDescription = styled.p`
-  font-family: var(--font-body);
-  font-size: 1.2rem;
-  color: var(--text-secondary);
-  text-align: center;
-  max-width: 700px;
-  margin: 0 auto 4rem;
-  line-height: 1.6;
-
-    @media (max-width: 768px) {
-    padding: 0rem 2rem 0rem 2rem;
+  p {
+    font-size: clamp(1rem, 2vw, 1.25rem);
+    max-width: 600px;
+    margin: 1rem auto 0;
+    line-height: 1.6;
+    font-weight: 300;
   }
 `;
 
