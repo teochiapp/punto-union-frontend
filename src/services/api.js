@@ -86,6 +86,24 @@ export const fetchAnimales = async () => {
   }
 };
 
+// Fetch single animal by ID
+// Note: Strapi v5 requires using filters for numeric IDs, not direct endpoint access
+export const fetchAnimal = async (animalId) => {
+  try {
+    const response = await api.get('/animals', {
+      params: {
+        'filters[id][$eq]': animalId,
+        'populate': '*',
+      },
+    });
+    // Return the first result in the same format as before (with data wrapper)
+    return { data: response.data.data?.[0] || null };
+  } catch (error) {
+    console.error('Error fetching animal:', error);
+    throw error;
+  }
+};
+
 // Fetch all promotions
 export const fetchPromociones = async () => {
   try {
@@ -101,4 +119,21 @@ export const fetchPromociones = async () => {
   }
 };
 
+// Fetch categories by animal
+export const fetchCategoriasPorAnimal = async (animalId) => {
+  try {
+    const response = await api.get('/categorias', {
+      params: {
+        'filters[animal][id][$eq]': animalId,
+        'populate': '*',
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching categorias por animal:', error);
+    throw error;
+  }
+};
+
 export default api;
+

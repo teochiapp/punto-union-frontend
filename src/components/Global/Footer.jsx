@@ -1,26 +1,34 @@
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
+const LogoWrapper = styled(Link)`
+  width: 170px;
+  height: 170px;
+  border-radius: 50%;
+  background-color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+  
+  &:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 15px rgba(255, 255, 255, 0.3);
+  }
+`;
+
+const Logo = styled.img`
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+`;
+
 
 const FooterContainer = styled.footer`
-  background-color: var(--color-secondary);
-  color: #fff;
-  padding: 4rem 3rem;
-  display: grid;
-  grid-template-columns: 1fr auto 1fr;
-  gap: 2rem;
-  font-family: 'Space Grotesk', sans-serif;
-  justify-items: center;
-  
-  @media (max-width: 900px) {
-    grid-template-columns: 1fr;
-    display: flex;
-    flex-direction: column-reverse;
-    align-items: center;
-    text-align: center;
-    padding: 3rem 1.5rem;
-    gap: 3rem;
-  }
+ display:flex;
+ flex-direction: column;
 `;
 
 const ColumnLeft = styled.div`
@@ -148,55 +156,108 @@ const Socials = styled.div`
   }
 `;
 
+
+const FooterDerechosReservados = styled.div`
+   position: relative;
+  display: flex;
+  justify-content: space-evenly;
+  font-size: 0.9rem;
+  background-color: var(--color-secondary);
+  color: white;
+  font-family: 'Space Grotesk', sans-serif;
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90%;
+    height: 1px;
+    background: rgba(255, 255, 255, 0.3);
+  }
+
+`;
+
+const TopSection = styled.div`
+ background-color: var(--color-secondary);
+  color: #fff;
+  padding: 4rem 3rem;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: 2rem;
+  font-family: 'Space Grotesk', sans-serif;
+  justify-items: center;
+  
+  @media (max-width: 900px) {
+    grid-template-columns: 1fr;
+    display: flex;
+    flex-direction: column-reverse;
+    align-items: center;
+    text-align: center;
+    padding: 3rem 1.5rem;
+    gap: 3rem;
+  }
+`;
+
 const Footer = () => {
   return (
     <>
       <FooterContainer>
-        {/* Left Column: Addresses */}
-        <ColumnLeft>
-          <SectionTitle>Visita nuestros locales</SectionTitle>
+        <TopSection>
 
-          <AddressGrid>
-            <AddressBlock>
-              <strong>Belgrano</strong>
-              <span>(718) 609-9300</span>
-            </AddressBlock>
 
-            <AddressBlock>
-              <strong>Barrio 31</strong>
-              <span>(516) 283-2349</span>
-            </AddressBlock>
+          {/* Left Column: Addresses */}
+          <ColumnLeft>
+            <SectionTitle>Visita nuestros locales</SectionTitle>
 
-            <AddressBlock>
-              <strong>Ezeiza</strong>
-              <span>(518) 249-4757</span>
-            </AddressBlock>
+            <AddressGrid>
+              <AddressBlock>
+                <strong>Belgrano</strong>
+                <span>(718) 609-9300</span>
+              </AddressBlock>
 
-            <AddressBlock>
-              <strong>Ramos Mejia</strong>
-              <span>(518) 249-4757</span>
-            </AddressBlock>
-          </AddressGrid>
-        </ColumnLeft>
+              <AddressBlock>
+                <strong>Barrio 31</strong>
+                <span>(516) 283-2349</span>
+              </AddressBlock>
 
-        {/* Center Column: Logo */}
-        <ColumnCenter>
-          <LogoCircle>
-            Punto Union Market
-          </LogoCircle>
-          <Socials>
-            <span>instagram</span> — <span>Whatsapp</span> — <span>email</span>
-          </Socials>
-        </ColumnCenter>
+              <AddressBlock>
+                <strong>Ezeiza</strong>
+                <span>(518) 249-4757</span>
+              </AddressBlock>
 
-        {/* Right Column: Navigation */}
-        <ColumnRight>
-          <FooterLink to="/nosotros">Nosotros</FooterLink>
-          <FooterLink to="/reservas">Reservas</FooterLink>
-          <FooterLink to="/sucursales">Sucursales</FooterLink>
-          <FooterLink to="/contacto">Contacto</FooterLink>
-          <FooterLink to="/catalogo/all">Catálogo</FooterLink>
-        </ColumnRight>
+              <AddressBlock>
+                <strong>Ramos Mejia</strong>
+                <span>(518) 249-4757</span>
+              </AddressBlock>
+            </AddressGrid>
+          </ColumnLeft>
+
+          {/* Center Column: Logo */}
+          <ColumnCenter>
+            <LogoWrapper to="/">
+              <Logo src="/javiblends.png" alt="JaviBlends" />
+            </LogoWrapper>
+            <Socials>
+              <a href="https://www.instagram.com/javiblends/?hl=es" target="_blank" rel="noopener noreferrer">instagram</a> — <a href="https://wa.me/5491163644401" target="_blank" rel="noopener noreferrer">Whatsapp</a> — <a href="mailto:contacto@javiblends.com">email</a>
+            </Socials>
+          </ColumnCenter>
+
+          {/* Right Column: Navigation */}
+          <ColumnRight>
+            <FooterLink to="/nosotros">Nosotros</FooterLink>
+            <FooterLink to="/reservas">Reservas</FooterLink>
+            <FooterLink to="/sucursales">Sucursales</FooterLink>
+            <FooterLink to="/contacto">Contacto</FooterLink>
+            <FooterLink to="/catalogo/all">Catálogo</FooterLink>
+          </ColumnRight>
+        </TopSection>
+
+        <FooterDerechosReservados>
+          <p>Diseñado y creado por SurCodes</p>
+          <p>© 2025 — Copyright, Todos los derechos reservados.</p>
+        </FooterDerechosReservados>
       </FooterContainer>
     </>
   );

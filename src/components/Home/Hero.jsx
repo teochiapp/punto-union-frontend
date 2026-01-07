@@ -1,6 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
 import { ChevronRight, ChevronLeft } from 'lucide-react';
+import { useAnimation } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
+import BlurText from "../Global/BlurText";
 
 const HeroSection = styled.section`
   position: relative;
@@ -44,23 +47,73 @@ const ContentWrapper = styled.div`
 `;
 
 const PreHeader = styled.p`
-  font-size: 0.8rem;
+  font-size: 1.1rem;
   text-transform: uppercase;
   letter-spacing: 4px;
   margin-bottom: 1rem;
   font-weight: 500;
   text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+
+   /* Apply gradient and inherit all styles to BlurText paragraph */
+  p {
+    margin: 0;
+    font-size: inherit;
+    font-weight: inherit;
+    line-height: inherit;
+    text-transform: inherit;
+    letter-spacing: inherit;
+    text-align: center;
+    justify-content: center;
+    
+  }
 `;
 
-const MainTitle = styled.h1`
+const MainTitle = styled.div`
   font-size: clamp(2.5rem, 5vw, 4.5rem);
   font-weight: 700;
   margin: 0 0 2.5rem 0;
   line-height: 1.1;
   text-transform: uppercase;
   letter-spacing: 1px;
-  text-shadow: 0 2px 10px rgba(0,0,0,0.3);
   max-width: 900px;
+  position: relative;
+  
+  p {
+    margin: 0;
+    font-size: inherit;
+    font-weight: inherit;
+    line-height: inherit;
+    text-transform: inherit;
+    letter-spacing: inherit;
+    text-align: center;
+    justify-content: center;
+    
+    /* Apply gradient to each animated span with stronger shadows */
+    span {
+      background: linear-gradient(to right, var(--color-secondary), #DDA448, var(--color-secondary));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      text-shadow: 0 2px 2px rgba(256, 256, 256, 0.10);
+      
+      /* Fallback for browsers that don't support text-shadow with gradient text */
+      position: relative;
+      
+      &::before {
+        content: attr(data-text);
+        position: absolute;
+        left: 0;
+        top: 0;
+        z-index: -1;
+        background: linear-gradient(to right, var(--color-secondary), #DDA448, var(--color-secondary));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        filter: blur(12px) brightness(1.5);
+        opacity: 0.4;
+      }
+    }
+  }
 `;
 
 const ButtonGroup = styled.div`
@@ -68,6 +121,7 @@ const ButtonGroup = styled.div`
   gap: 1.5rem;
   flex-wrap: wrap;
   justify-content: center;
+  
 `;
 
 const HeroButton = styled.button`
@@ -85,6 +139,7 @@ const HeroButton = styled.button`
   backdrop-filter: blur(4px);
   position: relative;
   overflow: hidden;
+  border-radius: 5px;
 
   &:hover {
     background-color: #BB342F; /* Secondary color from index.css */
@@ -123,26 +178,38 @@ const ArrowButton = styled.button`
 `;
 
 const Hero = () => {
-    return (
-        <HeroSection>
-            <ArrowButton $left aria-label="Previous slide">
-                <ChevronLeft size={48} strokeWidth={1} />
-            </ArrowButton>
+  const navigate = useNavigate();
 
-            <ArrowButton aria-label="Next slide">
-                <ChevronRight size={48} strokeWidth={1} />
-            </ArrowButton>
+  return (
+    <HeroSection>
+      <ArrowButton $left aria-label="Previous slide">
+        <ChevronLeft size={48} strokeWidth={1} />
+      </ArrowButton>
 
-            <ContentWrapper>
-                <PreHeader>Hace tu reserva antes del 25 de diciembre</PreHeader>
-                <MainTitle>Navidad en Punto Union Market</MainTitle>
+      <ArrowButton aria-label="Next slide">
+        <ChevronRight size={48} strokeWidth={1} />
+      </ArrowButton>
 
-                <ButtonGroup>
-                    <HeroButton>Mira nuestros cortes</HeroButton>
-                </ButtonGroup>
-            </ContentWrapper>
-        </HeroSection>
-    );
+      <ContentWrapper>
+        <PreHeader><BlurText
+          text="Hacé tus reservas y probá nuestros cortes"
+          delay={150}
+          animateBy="words"
+          direction="top"
+        /></PreHeader>
+        <MainTitle><BlurText
+          text="Javi Blends"
+          delay={150}
+          animateBy="words"
+          direction="top"
+        /></MainTitle>
+
+        <ButtonGroup>
+          <HeroButton onClick={() => navigate('/catalogo')}>Mirá nuestros cortes</HeroButton>
+        </ButtonGroup>
+      </ContentWrapper>
+    </HeroSection>
+  );
 };
 
 export default Hero;

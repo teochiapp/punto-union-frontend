@@ -16,22 +16,38 @@ const CategoriesContainer = styled.div`
 `;
 
 const CategoriesGrid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  display: flex;
+  flex-wrap: wrap;
   gap: 22px;
+  justify-content: center;
   margin: 0;
 
+  & > * {
+    flex: 0 0 calc(33.333% - 15px);
+    max-width: calc(33.333% - 15px);
+  }
+
   @media (max-width: 1024px) {
-    grid-template-columns: repeat(2, 1fr);
+    & > * {
+      flex: 0 0 calc(50% - 11px);
+      max-width: calc(50% - 11px);
+    }
   }
 
   @media (max-width: 768px) {
-    grid-template-columns: repeat(2, 1fr);
     gap: 16px;
+    
+    & > * {
+      flex: 0 0 calc(50% - 8px);
+      max-width: calc(50% - 8px);
+    }
   }
 
   @media (max-width: 480px) {
-    grid-template-columns: 1fr;
+    & > * {
+      flex: 0 0 100%;
+      max-width: 100%;
+    }
     gap: 16px;
   }
 `;
@@ -48,6 +64,7 @@ const CategoryCard = styled.article`
   display: flex;
   align-items: flex-end;
   justify-content: center;
+  border-radius: 12px;
 
   &:hover {
     transform: translateY(-8px);
@@ -207,7 +224,7 @@ const Categories = () => {
     const loadCategories = async () => {
       try {
         setLoading(true);
-        const data = await fetchCategorias(9);
+        const data = await fetchCategorias();
         setCategories(data.data || []);
         setError(null);
       } catch (err) {
@@ -269,18 +286,18 @@ const Categories = () => {
     <CategoriesSection>
       <CategoriesContainer>
         <CategoriesGrid>
-          {categories.map((category) => {
-            const imageUrl = getImageUrl(category.Portada);
+          {categories.map((categoria) => {
+            const imageUrl = getImageUrl(categoria.Portada);
 
             return (
               <CategoryCard
-                key={category.id}
-                onClick={() => navigate(`/catalogo/${encodeURIComponent(category.Nombre)}`)}
+                key={categoria.id}
+                onClick={() => navigate(`/catalogo/${encodeURIComponent(categoria.Nombre)}`)}
               >
                 {imageUrl ? (
                   <CategoryBackground
                     src={imageUrl}
-                    alt={category.Nombre || 'Categoría'}
+                    alt={categoria.Nombre || 'Categoría'}
                   />
                 ) : (
                   <CategoryBackgroundPlaceholder>
@@ -289,7 +306,7 @@ const Categories = () => {
                 )}
                 <CategoryOverlay />
                 <CategoryTitle>
-                  {category.Nombre || 'Sin nombre'}
+                  {categoria.Nombre || 'Sin nombre'}
                 </CategoryTitle>
               </CategoryCard>
             );

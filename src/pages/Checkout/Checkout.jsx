@@ -13,7 +13,8 @@ const CheckoutPage = () => {
     nombre: '',
     apellido: '',
     email: '',
-    telefono: ''
+    telefono: '',
+    sucursal: ''
   });
 
   const handleInputChange = (e) => {
@@ -27,7 +28,7 @@ const CheckoutPage = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (!formData.nombre || !formData.apellido || !formData.email || !formData.telefono) {
+    if (!formData.nombre || !formData.apellido || !formData.email || !formData.telefono || !formData.sucursal) {
       alert('Por favor, completa todos los campos obligatorios');
       return;
     }
@@ -55,7 +56,7 @@ const CheckoutPage = () => {
       mensaje += ` — Cantidad: ${item.quantity} — $${item.precio}\n`;
     });
 
-    mensaje += `\nEnvío: A coordinar\n`;
+    mensaje += `\nLugar de Retiro: ${formData.sucursal}\n`;
     mensaje += `Total a pagar: $${Math.round(totalPrice)}\n\n`;
 
     mensaje += `Datos de contacto\n`;
@@ -167,6 +168,22 @@ const CheckoutPage = () => {
                 />
                 <Label htmlFor="telefono">Número de teléfono*</Label>
               </FormGroup>
+
+              <FormGroup>
+                <Select
+                  id="sucursal"
+                  name="sucursal"
+                  value={formData.sucursal}
+                  onChange={handleInputChange}
+                  required
+                >
+                  <option value="">Seleccionar...</option>
+                  <option value="Ezeiza">Ezeiza</option>
+                  <option value="Ramos Mejía">Ramos Mejía</option>
+                  <option value="Retiro">Retiro</option>
+                </Select>
+                <Label htmlFor="sucursal">Sucursal de retiro*</Label>
+              </FormGroup>
             </FormSection>
 
             <OrderSection>
@@ -193,7 +210,7 @@ const CheckoutPage = () => {
                   </MessageText>
 
                   <MessageText>
-                    Envío: A coordinar
+                    Retiro: {formData.sucursal || 'A seleccionar'}
                     <br />
                     Total a pagar: <strong>${Math.round(totalPrice)}</strong>
                   </MessageText>
@@ -238,9 +255,9 @@ export default CheckoutPage;
 
 // Styled Components
 const PageContainer = styled.div`
-  min-height: 100vh;
+  min-height: 70vh;
   background-color: var(--color-background);
-  padding: 5rem 0 2rem 0;
+  padding: 8.5rem 0 2rem 0;   
 `;
 
 const Breadcrumb = styled.div`
@@ -361,6 +378,26 @@ const Input = styled.input`
 
   &::placeholder {
     color: #9ca3af;
+  }
+`;
+
+const Select = styled.select`
+  padding: 1rem;
+  border: 1px solid rgba(0,0,0, 0.5);
+  border-radius: 8px;
+  font-family: var(--font-body);
+  font-size: 1rem;
+  transition: border-color 0.3s ease;
+  background: var(--color-background);
+  cursor: pointer;
+
+  &:focus {
+    outline: none;
+    border-color: var(--primary-color);
+  }
+
+  option {
+    padding: 0.5rem;
   }
 `;
 

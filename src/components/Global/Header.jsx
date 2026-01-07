@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { ShoppingCart, Menu, X } from 'lucide-react';
+import { ShoppingCart, Menu, X, Instagram } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useCarrito } from '../../context/CarritoContext';
 
@@ -48,7 +48,7 @@ const NavLink = styled.button`
   color: inherit;
   background: none;
   border: none;
-  font-size: 0.9rem;
+  font-size: 1.1rem;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 2px;
@@ -91,7 +91,7 @@ const CenterGroup = styled.div`
 
 const Logo = styled.button`
   font-family: 'Josefin Sans', sans-serif;
-  font-size: 1.8rem;
+  font-size: 1.0rem;
   font-weight: 700;
   text-transform: capitalize;
   letter-spacing: -0.5px;
@@ -110,12 +110,27 @@ const Logo = styled.button`
     opacity: 0.8;
   }
 
-  span {
+  img {
     font-size: 0.7em;
     font-weight: 400;
+    width: 100%;
+    max-width: 90px;
+    height: auto;
   }
 
   @media (max-width: 540px) {
+    display: none;
+  }
+`;
+
+const LeftActions = styled.div`
+  grid-column: 1;
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  justify-self: start;
+  
+  @media (max-width: 1024px) {
     display: none;
   }
 `;
@@ -151,22 +166,27 @@ const ActionButton = styled.button`
 
 const CartBadge = styled.span`
   position: absolute;
-  top: 0;
-  right: 0;
+  top: -2px;
+  right: -2px;
   background: #8B2E2E;
   color: white;
   border-radius: 50%;
-  width: 18px;
-  height: 18px;
+  width: 20px;
+  height: 20px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 0.7rem;
+  font-size: 0.75rem;
   font-weight: 700;
   font-family: 'Josefin Sans', sans-serif;
   border: 2px solid ${({ $isScrolled, $transparent }) =>
-    ($transparent && !$isScrolled) ? 'transparent' : '#fdf7e9'};
-  transition: border-color 0.3s ease;
+    ($transparent && !$isScrolled) ? 'rgba(0, 0, 0, 0.2)' : '#fdf7e9'};
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  
+  /* Ensure text is always crisp and readable */
+  line-height: 1;
+  text-align: center;
 `;
 
 const MobileMenuBtn = styled(ActionButton)`
@@ -229,6 +249,26 @@ const Header = ({ transparent = false }) => {
         <Menu size={24} />
       </MobileMenuBtn>
 
+      {/* Instagram Icon - Left on Desktop */}
+      <LeftActions>
+        <a
+          href="https://www.instagram.com/javiblends/?hl=es"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Instagram"
+          style={{
+            color: 'inherit',
+            display: 'flex',
+            alignItems: 'center',
+            transition: 'transform 0.2s ease'
+          }}
+          onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.1)'}
+          onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}
+        >
+          <Instagram size={20} strokeWidth={1.5} />
+        </a>
+      </LeftActions>
+
       {/* Center Group: Nav Left + Logo + Nav Right */}
       <CenterGroup>
         <Nav>
@@ -236,7 +276,7 @@ const Header = ({ transparent = false }) => {
           <NavLink onClick={() => navigate('/catalogo')}>Catálogo</NavLink>
         </Nav>
 
-        <Logo onClick={() => navigate('/')}>Punto Union <span>Market</span></Logo>
+        <Logo onClick={() => navigate('/')}><img src="/javiblends.png" alt="Logo" /></Logo>
 
         <Nav>
           <NavLink onClick={() => navigate('/sucursales')}>Sucursales</NavLink>
@@ -264,9 +304,6 @@ const Header = ({ transparent = false }) => {
           <X size={32} />
         </MobileMenuBtn>
 
-        {/* Mobile Logo copy is optional but good for branding */}
-        <Logo onClick={() => { navigate('/'); toggleMenu(); }} style={{ display: 'flex', color: '#fff' }}>Punto Union <span>Market</span></Logo>
-
         <MobileLink onClick={() => { navigate('/nosotros'); toggleMenu(); }}>Nosotros</MobileLink>
         <MobileLink onClick={() => { navigate('/reservas'); toggleMenu(); }}>Reservas</MobileLink>
         <MobileLink onClick={() => { navigate('/sucursales'); toggleMenu(); }}>Sucursales</MobileLink>
@@ -275,6 +312,10 @@ const Header = ({ transparent = false }) => {
     </HeaderContainer>
   );
 };
+
+
+
+
 
 export default Header;
 

@@ -652,7 +652,7 @@ const BackButton = styled.button`
   font-size: 1rem;
   cursor: pointer;
   transition: color 0.3s ease;
-  margin-top: 1rem;
+  margin-top: 2rem; /* Increased padding top */
 
   &:hover {
     color: #8B2E2E;
@@ -684,7 +684,7 @@ const CategoryDescription = styled(motion.p)`
 `;
 
 const GridContainer = styled.div`
-  max-width: 1200px;
+  max-width: 1400px; /* Wider layout for better product display */
   margin: 0 auto;
   padding: 0 2rem 4rem;
 
@@ -695,12 +695,17 @@ const GridContainer = styled.div`
 
 const ProductsGrid = styled(motion.div)`
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  grid-template-columns: repeat(3, 1fr);
   gap: 2rem;
   
-  @media (min-width: 1024px) {
-     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-     gap: 3rem;
+  @media (max-width: 1024px) {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+  }
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
   }
 `;
 

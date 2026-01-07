@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -151,12 +151,19 @@ const Catalog = () => {
   const navigate = useNavigate();
   const { addItem } = useCarrito();
   const [products, setProducts] = useState([]);
+  const [allCategories, setAllCategories] = useState([]);
   const [category, setCategory] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [modalProduct, setModalProduct] = useState(null);
   const [modalQuantity, setModalQuantity] = useState(1);
+
+  // Filter state
+  const [filters, setFilters] = useState({
+    selectedCategories: [],
+    priceRange: { min: 0, max: 100000 }
+  });
 
   useEffect(() => {
     const loadData = async () => {
@@ -167,8 +174,10 @@ const Catalog = () => {
 
         const decodedCategoryName = decodeURIComponent(categoryName);
 
-        // Fetch Category Info
+        // Fetch all categories for filter sidebar
         const categoriesData = await fetchCategorias(100);
+        setAllCategories(categoriesData.data || []);
+
         const matchedCategory = categoriesData.data?.find(
           cat => cat.Nombre?.toLowerCase() === decodedCategoryName.toLowerCase()
         );
@@ -196,6 +205,23 @@ const Catalog = () => {
       loadData();
     }
   }, [categoryName]);
+
+  // Filter products based on selected filters
+  const filteredProducts = useMemo(() => {
+    return products.filter(product => {
+      // Filter by price range
+      const price = product.Precio || 0;
+      const inRange = price >= filters.priceRange.min && price <= filters.priceRange.max;
+
+      if (!inRange) {
+        return false;
+      }
+
+      // Note: Category filter not applicable here since we're already in a specific category
+      // But keeping the structure for consistency
+      return true;
+    });
+  }, [products, filters]);
 
   const handleProductClick = (product) => {
     const descriptionText = renderDescription(product.Descripcion);
@@ -226,6 +252,26 @@ const Catalog = () => {
   const handleCloseModal = () => {
     setShowModal(false);
   };
+
+  const handlePriceChange = (min, max) => {
+    const validMin = Math.min(min, max);
+    const validMax = Math.max(min, max);
+
+    setFilters({
+      ...filters,
+      priceRange: { min: validMin, max: validMax }
+    });
+  };
+
+  const handleClearFilters = () => {
+    setFilters({
+      selectedCategories: [],
+      priceRange: { min: 0, max: 100000 }
+    });
+  };
+
+  const activeFiltersCount =
+    (filters.priceRange.min > 0 || filters.priceRange.max < 100000 ? 1 : 0);
 
   return (
     <PageWrapper>
@@ -265,30 +311,100 @@ const Catalog = () => {
                   )}
                 </HeroSection>
 
-                {products.length === 0 ? (
-                  <div style={{ textAlign: 'center', color: '#666', padding: '4rem' }}>
-                    No hay productos disponibles por el momento.
-                  </div>
-                ) : (
-                  <ProductsGrid
-                    variants={containerVariants}
-                    initial="hidden"
-                    animate="visible"
-                  >
-                    {products.map((product) => (
-                      <ProductCardComponent
-                        key={product.id}
-                        product={product}
-                        variants={itemVariants}
-                        onProductClick={handleProductClick}
-                        addItem={addItem}
-                        setShowModal={setShowModal}
-                        setModalProduct={setModalProduct}
-                        setModalQuantity={setModalQuantity}
-                      />
-                    ))}
-                  </ProductsGrid>
-                )}
+                <ContentLayout>
+                  {/* Filter Sidebar */}
+                  <FilterSidebar>
+                    <FilterHeader>
+                      <FilterTitle>Filtros</FilterTitle>
+                      {activeFiltersCount > 0 && (
+                        <ClearFiltersBtn onClick={handleClearFilters}>
+                          Limpiar ({activeFiltersCount})
+                        </ClearFiltersBtn>
+                      )}
+                    </FilterHeader>
+
+                    {/* Price Filter */}
+                    <FilterSection>
+                      <FilterSectionTitle>Rango de Precio</FilterSectionTitle>
+
+                      <PriceInputsContainer>
+                        <PriceInputGroup>
+                          <PriceLabel>Mínimo</PriceLabel>
+                          <PriceNumberInput
+                            type="number"
+                            min="0"
+                            max="100000"
+                            step="1000"
+                            value={filters.priceRange.min}
+                            onChange={(e) => handlePriceChange(Number(e.target.value) || 0, filters.priceRange.max)}
+                            placeholder="$0"
+                          />
+                        </PriceInputGroup>
+
+                        <PriceInputGroup>
+                          <PriceLabel>Máximo</PriceLabel>
+                          <PriceNumberInput
+                            type="number"
+                            min="0"
+                            max="100000"
+                            step="1000"
+                            value={filters.priceRange.max}
+                            onChange={(e) => handlePriceChange(filters.priceRange.min, Number(e.target.value) || 0)}
+                            placeholder="$100.000"
+                          />
+                        </PriceInputGroup>
+                      </PriceInputsContainer>
+
+                      <PriceQuickFilters>
+                        <QuickFilterBtn onClick={() => handlePriceChange(0, 5000)}>
+                          Hasta $5.000
+                        </QuickFilterBtn>
+                        <QuickFilterBtn onClick={() => handlePriceChange(5000, 10000)}>
+                          $5.000 - $10.000
+                        </QuickFilterBtn>
+                        <QuickFilterBtn onClick={() => handlePriceChange(10000, 100000)}>
+                          Más de $10.000
+                        </QuickFilterBtn>
+                      </PriceQuickFilters>
+                    </FilterSection>
+
+                    <ResultsCount>
+                      {filteredProducts.length} producto{filteredProducts.length !== 1 ? 's' : ''} encontrado{filteredProducts.length !== 1 ? 's' : ''}
+                    </ResultsCount>
+                  </FilterSidebar>
+
+                  {/* Products Grid */}
+                  <ProductsContainer>
+                    {filteredProducts.length === 0 ? (
+                      <EmptyState>
+                        <p>No se encontraron productos con los filtros seleccionados.</p>
+                        <ClearFiltersBtn onClick={handleClearFilters} style={{ marginTop: '1rem' }}>
+                          Limpiar filtros
+                        </ClearFiltersBtn>
+                      </EmptyState>
+                    ) : (
+                      <ProductsGrid
+                        key={filteredProducts.map(p => p.id).join('-')}
+                        variants={containerVariants}
+                        initial="hidden"
+                        animate="visible"
+                      >
+                        {filteredProducts.map((product) => (
+                          <ProductCardComponent
+                            key={product.id}
+                            product={product}
+                            variants={itemVariants}
+                            onProductClick={handleProductClick}
+                            addItem={addItem}
+                            setShowModal={setShowModal}
+                            setModalProduct={setModalProduct}
+                            setModalQuantity={setModalQuantity}
+                          />
+                        ))}
+                      </ProductsGrid>
+                    )}
+                  </ProductsContainer>
+                </ContentLayout>
               </>
             )}
           </AnimatePresence>
@@ -346,7 +462,7 @@ const BackButton = styled.button`
   font-size: 1rem;
   cursor: pointer;
   transition: color 0.3s ease;
-  margin-top: 1rem; /* Reduced margin */
+  margin-top: 2rem; /* Increased padding top */
 
   &:hover {
     color: #8B2E2E; /* Reddish brown hover */
@@ -378,7 +494,7 @@ const CategoryDescription = styled(motion.p)`
 `;
 
 const GridContainer = styled.div`
-  max-width: 1200px; /* Constrained width like the card layout in image */
+  max-width: 1400px; /* Wider layout for better product display */
   margin: 0 auto;
   padding: 0 2rem 4rem;
 
@@ -387,15 +503,200 @@ const GridContainer = styled.div`
   }
 `;
 
+// --- Filter Styled Components ---
+
+const ContentLayout = styled.div`
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 2rem;
+  margin-top: 2rem;
+
+  @media (max-width: 968px) {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+`;
+
+const FilterSidebar = styled.div`
+  background: white;
+  border-radius: 16px;
+  padding: 1.5rem;
+  height: fit-content;
+  position: sticky;
+  top: 120px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+
+  @media (max-width: 968px) {
+    position: relative;
+    top: 0;
+  }
+`;
+
+const FilterHeader = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid #f0f0f0;
+`;
+
+const FilterTitle = styled.h3`
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #8B2E2E;
+  margin: 0;
+`;
+
+const ClearFiltersBtn = styled.button`
+  background: transparent;
+  border: none;
+  color: #8B2E2E;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.85rem;
+  cursor: pointer;
+  text-decoration: underline;
+  transition: opacity 0.2s;
+
+  &:hover {
+    opacity: 0.7;
+  }
+`;
+
+const FilterSection = styled.div`
+  margin-bottom: 1.5rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid #f0f0f0;
+
+  &:last-of-type {
+    border-bottom: none;
+  }
+`;
+
+const FilterSectionTitle = styled.h4`
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #1B1A18;
+  margin: 0 0 1rem 0;
+`;
+
+const PriceInputsContainer = styled.div`
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+`;
+
+const PriceInputGroup = styled.div`
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+`;
+
+const PriceLabel = styled.label`
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.85rem;
+  color: #666;
+  font-weight: 500;
+`;
+
+const PriceNumberInput = styled.input`
+  width: 100%;
+  padding: 0.75rem;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.95rem;
+  color: #1B1A18;
+  transition: all 0.2s;
+  
+  &:focus {
+    outline: none;
+    border-color: #8B2E2E;
+    box-shadow: 0 0 0 3px rgba(139, 46, 46, 0.1);
+  }
+
+  &::placeholder {
+    color: #999;
+  }
+
+  /* Remove spinner arrows for number input */
+  &::-webkit-outer-spin-button,
+  &::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  &[type=number] {
+    -moz-appearance: textfield;
+  }
+`;
+
+const PriceQuickFilters = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+`;
+
+const QuickFilterBtn = styled.button`
+  padding: 0.5rem;
+  background: #fdf7e9;
+  border: 1px solid #e0d4c0;
+  border-radius: 8px;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.85rem;
+  color: #8B2E2E;
+  cursor: pointer;
+  transition: all 0.2s;
+
+  &:hover {
+    background: #8B2E2E;
+    color: white;
+    border-color: #8B2E2E;
+  }
+`;
+
+const ResultsCount = styled.div`
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid #f0f0f0;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.9rem;
+  color: #666;
+  text-align: center;
+`;
+
+const ProductsContainer = styled.div`
+  min-height: 400px;
+`;
+
+const EmptyState = styled.div`
+  text-align: center;
+  padding: 4rem 2rem;
+  color: #666;
+  font-family: 'Space Grotesk', sans-serif;
+
+  p {
+    font-size: 1.1rem;
+    margin: 0;
+  }
+`;
+
 const ProductsGrid = styled(motion.div)`
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  grid-template-columns: repeat(3, 1fr);
   gap: 2rem;
   
-  @media (min-width: 1024px) {
-     /* Try to match the 2-column feel if there are few items, or standard grid */
-     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-     gap: 3rem;
+  @media (max-width: 1024px) {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+  }
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
   }
 `;
 
@@ -583,10 +884,3 @@ const LoadingContainer = styled.div`
   gap: 1rem;
 `;
 
-const EmptyState = styled.div`
-  text-align: center;
-  padding: 4rem;
-  color: #666;
-  font-family: 'Josefin Sans', sans-serif;
-  font-size: 1.2rem;
-`;
