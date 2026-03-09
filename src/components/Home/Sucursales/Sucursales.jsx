@@ -12,6 +12,7 @@ const SucursalesContainer = styled.div`
   padding: 0 2rem;
 `;
 
+
 const SectionTitle = styled.h2`
   font-family: var(--font-header);
   font-size: 2.5rem;
@@ -25,7 +26,7 @@ const SectionTitle = styled.h2`
 
 const SucursalesGrid = styled.div`
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: 0;
   margin: 0;
 
@@ -69,7 +70,7 @@ const BranchBackground = styled.div`
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 
   ${BranchCard}:hover & {
-    filter: grayscale(80%);
+    filter: grayscale(20%);
     transform: scale(1.05);
   }
 `;
@@ -151,31 +152,24 @@ const BranchDescription = styled.p`
 const Sucursales = () => {
   const branches = [
     {
-      id: 1,
-      year: '2020',
-      title: 'BELGRANO',
-      description: 'James Churchill opens Churchill\'s Butcher Shop at 132',
-      image: '/sucursales/belgrano.jpg'
-    },
-    {
       id: 2,
       year: '2022',
       title: 'RETIRO',
-      description: 'Jack Wallace, an employee, purchases the shop for £2,800',
+      description: 'Dirección: Av. General Paz 1234',
       image: '/sucursales/retiro.jpeg'
     },
     {
       id: 3,
       year: '2024',
       title: 'EZEIZA',
-      description: 'Gary Stokes, Jack\'s nephew, becomes the shop\'s third owner',
+      description: 'Dirección: Av. General Paz 1234',
       image: '/sucursales/ezeiza.jpg'
     },
     {
       id: 4,
       year: '2025',
       title: 'RAMOS MEJÍA',
-      description: 'Gary Stokes, Jack\'s nephew, becomes the shop\'s third owner',
+      description: 'Dirección: Av. General Paz 1234',
       image: '/sucursales/ramos-mejia.jpg'
     }
   ];

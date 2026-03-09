@@ -1,7 +1,6 @@
 import styled, { keyframes } from 'styled-components';
 import Header from '../../components/Global/Header';
 import Footer from '../../components/Global/Footer';
-import contactHero from '../../assets/images/contact_hero.png';
 import WhatsAppButton from '../../components/WhatsAppButton/WhatsAppButton';
 import { Mail, Phone, MapPin, Instagram, Facebook } from 'lucide-react';
 
@@ -14,12 +13,13 @@ const PageWrapper = styled.div`
   background-color: var(--color-background);
   font-family: var(--font-body);
   color: var(--text-primary);
+  overflow: hidden;
 `;
 
 const HeroSection = styled.div`
   height: 60vh;
   min-height: 400px;
-  background-image: url(${contactHero});
+  background-image: url(/cabeceras/contacto.jpg);
   background-size: cover;
   background-position: center;
   position: relative;
@@ -72,7 +72,8 @@ const MainContent = styled.div`
   display: grid;
   grid-template-columns: 1.5fr 1fr;
   gap: 6rem;
-
+  position: relative;
+  
   @media (max-width: 900px) {
     grid-template-columns: 1fr;
     gap: 3rem;
@@ -204,67 +205,102 @@ const SocialIcons = styled.div`
   }
 `;
 
+
+const ImgCarta = styled.img`
+    width: 20%;
+    height: auto;
+    position: absolute;
+    top: 35%;
+    left: 100%;
+    filter: drop-shadow(2px 2px 4px var(--secondary-color));
+
+    @media (max-width: 1700px) {
+      left: 90%;
+    }
+    @media (max-width: 1450px) {
+      display: none;
+    }
+`;
+
+const ImgVaca = styled.img`
+    width: 20%;
+    height: auto;
+    position: absolute;
+    top: 80.7%;
+    left: -29%;
+
+    @media (max-width: 1700px) {
+      left: 17%;
+    }
+    @media (max-width: 1630px) {
+      display: none;
+    }
+`;
+
+
 const ContactView = () => {
-    return (
-        <PageWrapper>
-            <Header />
-            <HeroSection>
-                <HeroContent>
-                    <h1>CONTACTO</h1>
-                    <p>No hay nada que nos guste más que interactuar con nuestros clientes. Empecemos algo grandioso juntos.</p>
-                </HeroContent>
-            </HeroSection>
+  return (
+    <PageWrapper>
+      <Header />
+      <HeroSection>
+        <HeroContent>
+          <h1>CONTACTO</h1>
+          <p>No hay nada que nos guste más que interactuar con nuestros clientes. Empecemos algo grandioso juntos.</p>
+        </HeroContent>
+      </HeroSection>
 
-            <MainContent>
-                <FormSection>
-                    <form onSubmit={(e) => e.preventDefault()}>
-                        <FormGroup>
-                            <label>Nombre <span>*</span></label>
-                            <input type="text" required />
-                        </FormGroup>
-                        <FormGroup>
-                            <label>Email <span>*</span></label>
-                            <input type="email" required />
-                        </FormGroup>
-                        <FormGroup>
-                            <label>Asunto</label>
-                            <input type="text" />
-                        </FormGroup>
-                        <FormGroup>
-                            <label>Mensaje <span>*</span></label>
-                            <textarea required></textarea>
-                        </FormGroup>
-                        <SubmitButton type="submit">ENVIAR</SubmitButton>
-                    </form>
-                </FormSection>
+      <MainContent>
+        <ImgCarta src="/imgs-reutilizables/carta.png" alt="Carta" />
+        <ImgVaca src="/imgs-reutilizables/vaca.png" alt="Vaca" />
+        <FormSection>
+          <form onSubmit={(e) => e.preventDefault()}>
+            <FormGroup>
+              <label>Nombre <span>*</span></label>
+              <input type="text" required />
+            </FormGroup>
+            <FormGroup>
+              <label>Email <span>*</span></label>
+              <input type="email" required />
+            </FormGroup>
+            <FormGroup>
+              <label>Asunto</label>
+              <input type="text" />
+            </FormGroup>
+            <FormGroup>
+              <label>Mensaje <span>*</span></label>
+              <textarea required></textarea>
+            </FormGroup>
+            <SubmitButton type="submit">ENVIAR</SubmitButton>
+          </form>
+        </FormSection>
 
-                <InfoSection>
-                    <InfoBlock>
-                        <h3>Javi Blends</h3>
-                        <p>Somos apasionados por la carne de calidad. Contactanos para consultas sobre nuestros productos, eventos o franquicias.</p>
-                    </InfoBlock>
+        <InfoSection>
+          <InfoBlock>
+            <h3>Javi Blends</h3>
+            <p>Somos apasionados por la carne de calidad. Contactanos para consultas sobre nuestros productos, eventos o franquicias.</p>
+          </InfoBlock>
 
-                    <InfoBlock>
-                        <h3>Carniceria Principal</h3>
-                        <p><MapPin size={18} /> Belgrano, CABA</p>
-                    </InfoBlock>
+          <InfoBlock>
+            <h3>Carniceria Principal</h3>
+            <p><MapPin size={18} /> Belgrano, CABA</p>
+          </InfoBlock>
 
-                    <InfoBlock>
-                        <h3>Contacto</h3>
-                        <p><Phone size={18} /> (011) 4567-8901</p>
-                        <p><Mail size={18} /> contacto@javiblends.com</p>
-                    </InfoBlock>
+          <InfoBlock>
+            <h3>Contacto</h3>
+            <p><Phone size={18} /> (011) 4567-8901</p>
+            <p><Mail size={18} /> contacto@javiblends.com</p>
+          </InfoBlock>
 
-                    <SocialIcons>
-                        <a href="#"><Instagram size={20} /></a>
-                        <a href="#"><Facebook size={20} /></a>
-                    </SocialIcons>
-                </InfoSection>
-            </MainContent>
-            <WhatsAppButton />
-            <Footer />
-        </PageWrapper>
-    );
+          <SocialIcons>
+            <a href="#"><Instagram size={20} /></a>
+            <a href="#"><Facebook size={20} /></a>
+          </SocialIcons>
+        </InfoSection>
+      </MainContent>
+      <WhatsAppButton />
+      <Footer />
+    </PageWrapper>
+  );
 };
 
 export default ContactView;

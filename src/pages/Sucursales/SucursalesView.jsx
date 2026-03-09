@@ -3,7 +3,6 @@ import { motion } from 'framer-motion';
 import { IconBrandWhatsapp } from '@tabler/icons-react';
 import { MapPin, Phone, Clock } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import sucursalesHero from '../../assets/images/contact_hero.png';
 
 const fadeIn = keyframes`
   from { opacity: 0; transform: translateY(20px); }
@@ -81,6 +80,17 @@ const SucursalesView = ({ sucursales }) => {
                     </InfoItem>
                   </SucursalInfo>
                 </ContentSection>
+
+                {/* Imágenes decorativas específicas por sucursal */}
+                {sucursal.id === 2 && (
+                  <ImgPollo src="/imgs-reutilizables/pollo.png" alt="Pollo decorativo" />
+                )}
+                {sucursal.id === 3 && (
+                  <ImgTabla src="/imgs-reutilizables/tabla.png" alt="Tabla decorativo" />
+                )}
+                {sucursal.id === 4 && (
+                  <ImgCarne src="/imgs-reutilizables/carne.png" alt="Carne decorativa" />
+                )}
               </SucursalRow>
             </FullWidthBackground>
           </motion.div>
@@ -99,10 +109,88 @@ const PageSection = styled.section`
   background-color: var(--color-background);
 `;
 
+const ImgTabla = styled.img`
+  width: 12%;
+  min-width: 100px;
+  height: auto;
+  position: absolute;
+  top: 50%;
+  left: -12%;
+  transform: translateY(-50%) rotate(-5deg);
+  opacity: 0.7;
+  z-index: 1;
+  filter: drop-shadow(2px 2px 4px var(--secondary-color));
+
+  
+  @media (min-width: 968px) and (max-width: 1650px) {
+    display: none;
+  }
+
+  @media (max-width: 968px) {
+    width: 80px;
+    min-width: 60px;
+    right: 10px;
+    left: auto;
+    top: 80%;
+    transform: translateY(-50%) rotate(-5deg);
+  }
+`;
+
+const ImgPollo = styled.img`
+  width: 12%;
+  min-width: 120px;
+  height: auto;
+  position: absolute;
+  top: 50%;
+  right: -15%;
+  transform: translateY(-50%) rotate(15deg);
+  opacity: 0.7;
+  z-index: 1;
+  filter: drop-shadow(2px 2px 4px var(--secondary-color));
+
+  
+  @media (min-width: 968px) and (max-width: 1650px) {
+    display: none;
+  }
+
+  @media (max-width: 968px) {
+    width: 80px;
+    min-width: 60px;
+    right: 10px;
+    top: 80%;
+    transform: translateY(-50%) rotate(15deg);
+  }
+`;
+
+const ImgCarne = styled.img`
+  width: 15%;
+  min-width: 130px;
+  height: auto;
+  position: absolute;
+  top: 50%;
+  right: -15%;
+  transform: translateY(-50%) rotate(-10deg);
+  opacity: 0.7;
+  z-index: 1;
+  filter: drop-shadow(2px 2px 4px var(--secondary-color));
+
+  @media (min-width: 968px) and (max-width: 1650px) {
+    display: none;
+  }
+
+  @media (max-width: 968px) {
+    width: 80px;
+    min-width: 60px;
+    right: 10px;
+    top: 80%;
+    transform: translateY(-50%) rotate(-10deg);
+  }
+`;
+
 const HeroSection = styled.div`
   height: 60vh;
   min-height: 400px;
-  background-image: url(${sucursalesHero});
+  background-image: url(/cabeceras/sucursales.jpg);
   background-size: cover;
   background-position: center;
   position: relative;
@@ -160,6 +248,8 @@ const FullWidthBackground = styled.div`
   background-color: ${props => props.$hasBackground ? 'rgba(210, 164, 120, 0.18)' : 'transparent'};
   padding: 3rem 1.5rem;
   transition: background-color 0.3s ease;
+  position: relative;
+  overflow: visible;
 
   @media (max-width: 968px) {
     padding: 2rem 1rem;
@@ -173,6 +263,7 @@ const SucursalRow = styled.div`
   max-width: 1200px;
   margin: 0 auto;
   align-items: center;
+  position: relative;
   
   ${props => props.$reverse && `
     direction: rtl;

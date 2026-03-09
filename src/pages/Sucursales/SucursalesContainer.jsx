@@ -6,16 +6,6 @@ const SucursalesContainer = () => {
     // Datos de sucursales con imágenes
     const sucursales = [
         {
-            id: 1,
-            year: '2020',
-            nombre: 'BELGRANO',
-            direccion: 'Av. Cabildo 2589, Belgrano',
-            telefono: '+54 11 4785-2341',
-            horario: 'Lun a Vie: 8:00 - 20:00, Sáb: 9:00 - 14:00',
-            descripcion: 'Nuestra primera sucursal, inaugurada en 2020 en el corazón de Belgrano',
-            image: '/sucursales/belgrano.jpg'
-        },
-        {
             id: 2,
             year: '2022',
             nombre: 'RETIRO',
