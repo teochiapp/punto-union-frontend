@@ -24,23 +24,15 @@ const SectionTitle = styled.h2`
 `;
 
 const SucursalesGrid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 0;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
   margin: 0;
-
-  @media (max-width: 1024px) {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  @media (max-width: 768px) {
-    grid-template-columns: 1fr;
-  }
 `;
 
 const BranchCard = styled.article`
   position: relative;
-  width: 100%;
+  width: 25%;
   height: 50vh;
   overflow: hidden;
   cursor: pointer;
@@ -51,7 +43,12 @@ const BranchCard = styled.article`
     z-index: 2;
   }
 
+  @media (max-width: 1024px) {
+    width: 50%;
+  }
+
   @media (max-width: 768px) {
+    width: 100%;
     height: 40vh;
   }
 `;
@@ -95,6 +92,8 @@ const BranchContent = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
+  align-items: center;
+  text-align: center;
   padding: 2rem;
 `;
 
@@ -137,7 +136,7 @@ const BranchDescription = styled.p`
   font-family: var(--font-body);
   font-size: 0.95rem;
   color: #ffffff;
-  margin: 0;
+  margin: 0 auto;
   line-height: 1.4;
   text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.5);
   max-width: 90%;
@@ -150,13 +149,6 @@ const BranchDescription = styled.p`
 // Component
 const Sucursales = () => {
   const branches = [
-    {
-      id: 1,
-      year: '2020',
-      title: 'BELGRANO',
-      description: 'James Churchill opens Churchill\'s Butcher Shop at 132',
-      image: '/sucursales/belgrano.jpg'
-    },
     {
       id: 2,
       year: '2022',
