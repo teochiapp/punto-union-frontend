@@ -5,12 +5,6 @@ import { MapPin, ShoppingBag, Award, Heart } from 'lucide-react';
 const AboutContainer = () => {
   const locations = [
     {
-      id: 1,
-      name: 'BELGRANO',
-      address: '(718) 609-9300',
-      icon: <Award size={32} />,
-    },
-    {
       id: 2,
       name: 'BARRIO 31',
       address: '(516) 283-2349',

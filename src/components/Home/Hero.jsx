@@ -10,7 +10,7 @@ const HeroSection = styled.section`
   height: 100vh;
   min-height: 700px;
   width: 100%;
-  background-image: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url('/img-hero/img-hero.webp');
+  background-image: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url('/fotospasojavi/herojavi.jpeg');
   background-size: cover;
   background-position: center;
   display: flex;
@@ -78,6 +78,8 @@ const MainTitle = styled.div`
   max-width: 900px;
   position: relative;
   
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.8));
+  
   p {
     margin: 0;
     font-size: inherit;
@@ -94,9 +96,6 @@ const MainTitle = styled.div`
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
-      text-shadow: 0 2px 2px rgba(256, 256, 256, 0.10);
-      
-      /* Fallback for browsers that don't support text-shadow with gradient text */
       position: relative;
       
       &::before {
@@ -105,12 +104,12 @@ const MainTitle = styled.div`
         left: 0;
         top: 0;
         z-index: -1;
-        background: linear-gradient(to right, var(--color-secondary), #DDA448, var(--color-secondary));
+        background: #000;
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         background-clip: text;
-        filter: blur(12px) brightness(1.5);
-        opacity: 0.4;
+        filter: blur(8px);
+        opacity: 0.9;
       }
     }
   }

@@ -2,7 +2,6 @@ import styled, { keyframes } from 'styled-components';
 import Header from '../../components/Global/Header';
 import Footer from '../../components/Global/Footer';
 import WhatsAppButton from '../../components/WhatsAppButton/WhatsAppButton';
-
 import aboutHero from '../../assets/images/about_hero.png';
 
 const fadeIn = keyframes`
@@ -15,6 +14,7 @@ const Section = styled.section`
   color: var(--text-primary);
   font-family: var(--font-body);
   min-height: 100vh;
+  overflow: hidden;
 `;
 
 const HeroSection = styled.div`
@@ -184,7 +184,8 @@ const MainContent = styled.div`
   padding: 2rem; 
   border: 1px solid transparent; 
   transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-
+  position: relative;
+  
 
   &:hover {
     box-shadow: 0 20px 30px rgba(0, 0, 0, 0.12);
@@ -230,6 +231,59 @@ const TextContent = styled.div`
   }
 `;
 
+
+const ImgCuchillo = styled.img`
+    width: 25%;
+    height: auto;
+    position: absolute;
+    top: 20%;
+    left: 105%;
+
+    @media (max-width: 1800px) {
+        display: none;
+    }
+    `;
+
+const ImgCuchilloDos = styled.img`
+    width: 25%;
+    height: auto;
+    position: absolute;
+    top: 20%;
+    left: 105%;
+    transform: rotate(90deg);
+    transform: scaleX(-1);
+
+    @media (max-width: 1800px) {
+        display: none;
+    }
+    `;
+
+const ImgCuchilloTres = styled.img`
+    width: 25%;
+    height: auto;
+    position: absolute;
+    top: 20%;
+    right: 105%;
+    transform: scaleX(-1) rotate(270deg);
+
+    @media (max-width: 1800px) {
+        display: none;
+    }    
+    `;
+
+const ImgCuchilloCuatro = styled.img`
+    width: 25%;
+    height: auto;
+    position: absolute;
+    top: 20%;
+    right: 105%;
+    transform: rotate(270deg);
+    
+    @media (max-width: 1800px) {
+        display: none;
+    }    
+    `;
+
 const AboutView = ({ locations, aboutContent }) => {
   return (
     <Section>
@@ -252,6 +306,10 @@ const AboutView = ({ locations, aboutContent }) => {
               <p key={index}>{para}</p>
             ))}
           </TextContent>
+          <ImgCuchillo src="/imgs-reutilizables/Cuchillo.png" alt="Cuchillo" />
+          <ImgCuchilloDos src="/imgs-reutilizables/Cuchillo.png" alt="Cuchillo" />
+          <ImgCuchilloTres src="/imgs-reutilizables/cuchilla.png" alt="Cuchillo" />
+          <ImgCuchilloCuatro src="/imgs-reutilizables/cuchilla.png" alt="Cuchillo" />
         </MainContent>
         <Title>Nuestros Locales</Title>
         <LocationsGrid>

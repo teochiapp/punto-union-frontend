@@ -177,6 +177,8 @@ const FooterDerechosReservados = styled.div`
     background: rgba(255, 255, 255, 0.3);
   }
 
+  
+
 `;
 
 const TopSection = styled.div`
@@ -212,10 +214,10 @@ const Footer = () => {
             <SectionTitle>Visita nuestros locales</SectionTitle>
 
             <AddressGrid>
-              <AddressBlock>
+              {/* <AddressBlock>
                 <strong>Belgrano</strong>
                 <span>(718) 609-9300</span>
-              </AddressBlock>
+              </AddressBlock> */}
 
               <AddressBlock>
                 <strong>Barrio 31</strong>
@@ -255,10 +257,10 @@ const Footer = () => {
         </TopSection>
 
         <FooterDerechosReservados>
-          <p>Diseñado y creado por SurCodes</p>
+          <p>Diseñado y creado por <a href="https://surcodes.com" target="_blank" rel="noopener noreferrer">SurCodes</a></p>
           <p>© 2025 — Copyright, Todos los derechos reservados.</p>
         </FooterDerechosReservados>
-      </FooterContainer>
+      </FooterContainer >
     </>
   );
 };
