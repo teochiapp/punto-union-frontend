@@ -220,18 +220,18 @@ const Footer = () => {
               </AddressBlock> */}
 
               <AddressBlock>
-                <strong>Barrio 31</strong>
-                <span>(516) 283-2349</span>
+                <strong>Retiro</strong>
+                <span>(11) 2383-5105</span>
               </AddressBlock>
 
               <AddressBlock>
                 <strong>Ezeiza</strong>
-                <span>(518) 249-4757</span>
+                <span>(11) 7371-9290</span>
               </AddressBlock>
 
               <AddressBlock>
-                <strong>Ramos Mejia</strong>
-                <span>(518) 249-4757</span>
+                <strong>Luzuriaga</strong>
+                <span>(11) 3934-8398</span>
               </AddressBlock>
             </AddressGrid>
           </ColumnLeft>
@@ -258,7 +258,7 @@ const Footer = () => {
 
         <FooterDerechosReservados>
           <p>Diseñado y creado por <a href="https://surcodes.com" target="_blank" rel="noopener noreferrer">SurCodes</a></p>
-          <p>© 2025 — Copyright, Todos los derechos reservados.</p>
+          <p>© 2026 — Copyright, Todos los derechos reservados.</p>
         </FooterDerechosReservados>
       </FooterContainer >
     </>

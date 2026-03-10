@@ -2,8 +2,6 @@ import styled, { keyframes } from 'styled-components';
 import Header from '../../components/Global/Header';
 import Footer from '../../components/Global/Footer';
 import WhatsAppButton from '../../components/WhatsAppButton/WhatsAppButton';
-import aboutHero from '../../assets/images/about_hero.png';
-
 const fadeIn = keyframes`
   from { opacity: 0; transform: translateY(20px); }
   to { opacity: 1; transform: translateY(0); }
@@ -20,7 +18,7 @@ const Section = styled.section`
 const HeroSection = styled.div`
   height: 60vh;
   min-height: 400px;
-  background-image: url(${aboutHero});
+  background-image: url('/fotospasojavi/Contacto.jpeg');
   background-size: cover;
   background-position: center;
   position: relative;

@@ -1,25 +1,24 @@
 import AboutView from './AboutView';
-import javiStoreImg from '../../assets/images/javi_blends_store.png';
 import { MapPin, ShoppingBag, Award, Heart } from 'lucide-react';
 
 const AboutContainer = () => {
   const locations = [
     {
       id: 2,
-      name: 'BARRIO 31',
-      address: '(516) 283-2349',
+      name: 'RETIRO',
+      address: '15 Carlos H. Perette',
       icon: <MapPin size={32} />,
     },
     {
       id: 3,
       name: 'EZEIZA',
-      address: '(518) 249-4757',
+      address: 'Los Molinos 910',
       icon: <Heart size={32} />,
     },
     {
       id: 4,
-      name: 'RAMOS MEJIA',
-      address: '(518) 249-4757',
+      name: 'LUZURIAGA',
+      address: 'Miguel Cané 1969',
       icon: <ShoppingBag size={32} />,
     },
   ];
@@ -31,7 +30,7 @@ const AboutContainer = () => {
       'Nuestra pasión por el oficio se refleja en cada detalle, desde la selección de nuestros proveedores hasta la atención personalizada que brindamos en nuestros locales.',
       'Con un compromiso inquebrantable con la calidad y el servicio, combinamos la tradición carnicera con la innovación para ofrecerte una experiencia única de compra. Bienvenido a JAVI BLENDS.',
     ],
-    imageUrl: javiStoreImg,
+    imageUrl: '/fotospasojavi/herojavi.jpeg',
   };
 
   return <AboutView locations={locations} aboutContent={aboutContent} />;

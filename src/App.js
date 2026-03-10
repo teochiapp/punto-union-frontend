@@ -10,10 +10,12 @@ import ProductDetail from './pages/ProductDetail/ProductDetail';
 import Carrito from './pages/Carrito/Carrito';
 import Checkout from './pages/Checkout/Checkout';
 import SucursalesContainer from './pages/Sucursales/SucursalesContainer';
+import ScrollToTop from './components/Global/ScrollToTop';
 
 const App = () => {
   return (
     <BrowserRouter>
+      <ScrollToTop />
       <Routes>
         <Route>
           <Route index element={<HomeContainer />} />

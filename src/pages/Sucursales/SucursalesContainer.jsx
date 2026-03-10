@@ -9,30 +9,30 @@ const SucursalesContainer = () => {
             id: 2,
             year: '2022',
             nombre: 'RETIRO',
-            direccion: 'Av. Libertador 1250, Retiro',
+            direccion: '15 Carlos H. Perette',
             telefono: '+54 9 11 2383-5105',
             horario: 'Lun a Sáb: 8:00 - 20:00',
-            descripcion: 'Expandimos nuestra presencia en 2022 con esta moderna sucursal en Retiro',
+            descripcion: 'Expandimos nuestra presencia en 2025 con esta moderna sucursal en Retiro',
             image: '/fotospasojavi/SurcursalRetiro.jpeg'
         },
         {
             id: 3,
             year: '2024',
             nombre: 'EZEIZA',
-            direccion: 'Ruta 205 Km 32, Ezeiza',
+            direccion: 'Los Molinos 910',
             telefono: '+54 9 11 7371-9290',
             horario: 'Lun a Dom: 7:00 - 21:00',
-            descripcion: 'Nuestra sucursal más grande, inaugurada en 2024 para servir a toda la zona sur',
+            descripcion: 'Nuestra sucursal más grande, inaugurada en 2026 para servir a toda la zona sur',
             image: '/fotospasojavi/Sucursalezeiza.jpeg'
         },
         {
             id: 4,
             year: '2025',
             nombre: 'LUZURIAGA',
-            direccion: 'Av. Rivadavia 13450, Ramos Mejía',
+            direccion: 'Miguel Cané 1969',
             telefono: '+54 9 11 3934-8398',
             horario: 'Lun a Vie: 8:30 - 19:30, Sáb: 9:00 - 15:00',
-            descripcion: 'Nuestra sucursal más reciente, abierta en 2025 en el oeste del Gran Buenos Aires',
+            descripcion: 'Nuestra sucursal más reciente, abierta en 2026 en el oeste del Gran Buenos Aires',
             image: '/fotospasojavi/Sucursalluzuriaga.png'
         }
     ];

@@ -154,21 +154,21 @@ const Sucursales = () => {
       id: 2,
       year: '2022',
       title: 'RETIRO',
-      description: 'Dirección: Av. General Paz 1234',
+      description: 'Dirección: 15 Carlos H. Perette',
       image: '/sucursales/retiro.jpeg'
     },
     {
       id: 3,
       year: '2024',
       title: 'EZEIZA',
-      description: 'Dirección: Av. General Paz 1234',
+      description: 'Dirección: Los Molinos 910',
       image: '/sucursales/ezeiza.jpg'
     },
     {
       id: 4,
       year: '2025',
       title: 'LUZURIAGA',
-      description: 'Dirección: Av. General Paz 1234',
+      description: 'Dirección: Miguel Cané 1969',
       image: '/sucursales/ramos-mejia.jpg'
     }
   ];
