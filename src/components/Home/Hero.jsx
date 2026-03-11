@@ -46,7 +46,7 @@ const ContentWrapper = styled.div`
   margin-top: 60px; /* Offset for header roughly */
 `;
 
-const PreHeader = styled.p`
+const PreHeader = styled.div`
   font-size: 1.1rem;
   text-transform: uppercase;
   letter-spacing: 4px;
@@ -54,8 +54,8 @@ const PreHeader = styled.p`
   font-weight: 500;
   text-shadow: 0 2px 4px rgba(0,0,0,0.3);
 
-   /* Apply gradient and inherit all styles to BlurText paragraph */
-  p {
+   /* Apply gradient and inherit all styles to BlurText div */
+  div {
     margin: 0;
     font-size: inherit;
     font-weight: inherit;
@@ -80,7 +80,7 @@ const MainTitle = styled.div`
   
   filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.8));
   
-  p {
+  div {
     margin: 0;
     font-size: inherit;
     font-weight: inherit;
