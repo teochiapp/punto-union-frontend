@@ -1,7 +1,10 @@
 import axios from 'axios';
 
 const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:1337/api';
-export const BASE_URL = API_URL.replace('/api', '');
+// Esta versión es mucho más segura: solo quita el "/api" si está al FINAL de la URL
+export const BASE_URL = API_URL.endsWith('/api') 
+  ? API_URL.slice(0, -4) 
+  : API_URL;
 
 const api = axios.create({
   baseURL: API_URL,
