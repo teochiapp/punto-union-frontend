@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { fetchPromociones } from '../../../services/api';
+import { fetchPromociones, BASE_URL } from '../../../services/api';
 import './Promotions.css';
 
 // Helper function to extract text from Strapi Rich Text Blocks
@@ -8,15 +8,21 @@ const extractTextFromBlocks = (blocks) => {
 
     return blocks
         .map(block => {
-            if (block.type === 'paragraph' && block.children) {
+            if (block.children) {
                 return block.children
-                    .map(child => child.text || '')
+                    .map(child => {
+                        if (child.text) return child.text;
+                        if (child.children) {
+                            return child.children.map(c => c.text || '').join('');
+                        }
+                        return '';
+                    })
                     .join('');
             }
             return '';
         })
         .filter(text => text.length > 0)
-        .join(' ');
+        .join('\n');
 };
 
 const Promotions = () => {
@@ -40,7 +46,9 @@ const Promotions = () => {
                     subtitle: promo.Subtitulo,
                     description: extractTextFromBlocks(promo.Descripcion),
                     image: promo.Portada?.url
-                        ? `${process.env.REACT_APP_API_URL.replace('/api', '')}${promo.Portada.url}`
+                        ? (promo.Portada.url.startsWith('http') ? promo.Portada.url : `${BASE_URL}${promo.Portada.url}`)
+                        : promo.Portada?.data?.attributes?.url
+                        ? (promo.Portada.data.attributes.url.startsWith('http') ? promo.Portada.data.attributes.url : `${BASE_URL}${promo.Portada.data.attributes.url}`)
                         : 'https://images.unsplash.com/photo-1588168333986-5078d3ae3976?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80'
                 }));
 
