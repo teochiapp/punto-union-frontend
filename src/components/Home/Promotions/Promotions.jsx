@@ -21,7 +21,6 @@ const extractTextFromBlocks = (blocks) => {
             }
             return '';
         })
-        .filter(text => text.length > 0)
         .join('\n');
 };
 
