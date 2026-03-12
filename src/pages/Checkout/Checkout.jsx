@@ -33,8 +33,15 @@ const CheckoutPage = () => {
       return;
     }
 
+    // Mapeo de números de WhatsApp por sucursal
+    const numerosWhatsApp = {
+      'Retiro': '5491123835105',
+      'Ezeiza': '5491173719290',
+      'Luzuriaga': '5491139348398'
+    };
+
     const mensaje = generarMensajeWhatsApp();
-    const numeroWhatsApp = '5491163644401';
+    const numeroWhatsApp = numerosWhatsApp[formData.sucursal] || '5491163644401'; // Default por si acaso
     const urlWhatsApp = `https://wa.me/${numeroWhatsApp}?text=${encodeURIComponent(mensaje)}`;
 
     window.open(urlWhatsApp, '_blank');
@@ -63,8 +70,6 @@ const CheckoutPage = () => {
     mensaje += `• Nombre: ${nombreCompleto}\n`;
     mensaje += `• Teléfono: ${formData.telefono}\n`;
     mensaje += `• Email: ${formData.email}\n\n`;
-
-    mensaje += `Último paso, enviame el link de pago o comprobante (MercadoPago / Transferencia), así comienzo a hacer su pedido\n\n`;
 
     mensaje += `Quedo atento.`;
 
@@ -179,7 +184,7 @@ const CheckoutPage = () => {
                 >
                   <option value="">Seleccionar...</option>
                   <option value="Ezeiza">Ezeiza</option>
-                  <option value="Ramos Mejía">Ramos Mejía</option>
+                  <option value="Luzuriaga">Luzuriaga</option>
                   <option value="Retiro">Retiro</option>
                 </Select>
                 <Label htmlFor="sucursal">Sucursal de retiro*</Label>
