@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { ShoppingCart, ArrowLeft } from 'lucide-react';
-import { fetchProductos, fetchProductosPorCategoria } from '../../services/api';
+import { fetchProductos, fetchProductosPorCategoria, BASE_URL } from '../../services/api';
 import { useCarrito } from '../../context/CarritoContext';
 import Header from '../../components/Global/Header';
 import Footer from '../../components/Global/Footer';
@@ -89,11 +89,11 @@ const ProductDetail = () => {
     if (!portada) return null;
     if (portada.url) {
       const url = portada.url;
-      return url.startsWith('http') ? url : `http://localhost:1337${url}`;
+      return url.startsWith('http') ? url : `${BASE_URL}${url}`;
     }
     if (portada.data?.attributes?.url) {
       const url = portada.data.attributes.url;
-      return url.startsWith('http') ? url : `http://localhost:1337${url}`;
+      return url.startsWith('http') ? url : `${BASE_URL}${url}`;
     }
     return null;
   };

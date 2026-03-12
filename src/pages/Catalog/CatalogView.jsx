@@ -8,15 +8,16 @@ import Footer from '../../components/Global/Footer';
 import CarritoModal from '../../components/Global/CarritoModal';
 import { useCarrito } from '../../context/CarritoContext';
 import WhatsAppButton from '../../components/WhatsAppButton/WhatsAppButton';
+import { BASE_URL } from '../../services/api';
 
 // --- Helper Functions ---
 
 const getImageUrl = (imagen) => {
   if (!imagen) return null;
-  if (imagen.url) return imagen.url.startsWith('http') ? imagen.url : `http://localhost:1337${imagen.url}`;
+  if (imagen.url) return imagen.url.startsWith('http') ? imagen.url : `${BASE_URL}${imagen.url}`;
   if (imagen.data?.attributes?.url) {
     const url = imagen.data.attributes.url;
-    return url.startsWith('http') ? url : `http://localhost:1337${url}`;
+    return url.startsWith('http') ? url : `${BASE_URL}${url}`;
   }
   return null;
 };

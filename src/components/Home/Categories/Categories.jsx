@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import { fetchCategorias } from '../../../services/api';
+import { fetchCategorias, BASE_URL } from '../../../services/api';
 
 // Styled Components
 const CategoriesSection = styled.section`
@@ -244,13 +244,13 @@ const Categories = () => {
     // Strapi returns the image URL directly or in nested structure
     if (portada.url) {
       const url = portada.url;
-      return url.startsWith('http') ? url : `http://localhost:1337${url}`;
+      return url.startsWith('http') ? url : `${BASE_URL}${url}`;
     }
 
     // Handle nested data structure
     if (portada.data?.attributes?.url) {
       const url = portada.data.attributes.url;
-      return url.startsWith('http') ? url : `http://localhost:1337${url}`;
+      return url.startsWith('http') ? url : `${BASE_URL}${url}`;
     }
 
     return null;
